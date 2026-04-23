@@ -1,0 +1,131 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Public\IndexController;
+use App\Http\Controllers\Public\IndexNewController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminItemsController;
+use App\Http\Controllers\AdminCategoriesController;
+use App\Http\Controllers\StaticPagesController;
+use App\Http\Controllers\AdminLanguagesController;
+use App\Http\Controllers\ChangeLanguageController;
+use App\Http\Controllers\ErrorsHandlingController;
+use App\Http\Middleware\Localization;
+use App\Http\Middleware\SetLocal;
+use Illuminate\Support\Facades\Config;
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+//Route::get('/', [IndexController::class, 'index' ]);
+Route::get('/manager_secret', [AdminController::class, 'index']);
+Route::get('/manager_secret/items', [AdminItemsController::class, 'index'])->name('admin.item.index');
+Route::match(['get', 'post'], '/manager_secret/item/create', [AdminItemsController::class, 'create'])->name('admin.item.create');
+Route::post('/manager_secret/item/store', [AdminItemsController::class, 'store'])->name('item.store');
+Route::post('/manager_secret/item/update', [AdminItemsController::class, 'update'])
+->name('admin.item.update');
+Route::get('/manager_secret/item/show', [AdminItemsController::class, 'show'])
+->name('admin.item.show');
+Route::get('/manager_secret/item/edit/{id}', [AdminItemsController::class, 'edit'])
+->name('admin.item.edit');
+
+Route::get('/manager_secret/categories', [AdminCategoriesController::class, 'index'])->name('admin.category.index');
+Route::match(['get', 'post'], '/manager_secret/category/create', [AdminCategoriesController::class, 'create'])->name('admin.category.create');
+Route::post('/manager_secret/category/store', [AdminCategoriesController::class, 'store'])->name('admin.category.store');
+Route::get('/manager_secret/languages', [AdminLanguagesController::class, 'index'])->name('admin.language.index');
+Route::match(['get', 'post'], '/manager_secret/language/create', [AdminLanguagesController::class, 'create'])->name('admin.language.create');
+Route::post('/manager_secret/language/store', [AdminLanguagesController::class, 'store'])->name('admin.language.store');
+/*Route::group(['middleware' => ['cors']], function () {
+    Route::get('/{locale?}', [IndexController::class, 'index']);
+});*/
+/*
+Route::get('/{locale?}', function ($locale = null) {
+    if (isset($locale) && in_array($locale, Config::get('app.available_locales'))) {
+        app()->setLocale($locale);
+       
+    }else{
+        echo "locale: ".$locale;
+    }
+    Route::get('/', [IndexController::class, 'index']);
+   // print_r(Config::get('app.available_locales')); 
+   // return view('welcome');
+});
+*/
+//LOCAl
+Route::get('locale/{locale}', [ChangeLanguageController::class, 'index']);
+Route::get('/', [ChangeLanguageController::class, 'forcely'])->name('set-forcely-locale');
+Route::get('/errors', [ErrorsHandlingController::class, 'index'])->name('wrong-locale');
+///////////
+//Route::prefix('{locale?}')->middleware('Localization')->group(function() {
+Route::group(['middleware' => ['check-locale'],'prefix' => '{locale?}'], function($locale) {
+//Route::prefix('{locale?}')->middleware('web')->group(function() {
+    /*echo "!!!<pre>";
+    print_r($locale);
+    echo "</pre>";*/
+    /*if (isset($locale) && in_array($locale, Config::get('app.available_locales'))) {
+        echo "yes111";
+        exit;
+    }else{
+        //echo "locale".$locale;
+        //print_r($locale);
+        echo "no".$locale->name;
+        exit;
+    }*/
+    Route::get('/', [IndexController::class, 'index']);
+    Route::get('/about', [StaticPagesController::class, 'about']);
+    Route::get('/{category}', [IndexController::class, 'category'])->name('category');
+    Route::get('/{item}', [IndexController::class, 'item'])->name('item');
+    Route::get('/category/{category}/brand/{brand}/{item}', [IndexController::class, 'item']);
+});
+//Route::get('/', [IndexNewController::class, 'index']);
+//Route::get('/', [IndexController::class, 'index']);
+/*
+Route::prefix('{locale?}/category/{category}/brand/{brand}/{item}')->middleware('web')->group(function() {
+    Route::get('/category/{category}/brand/{brand}/{item}', [IndexController::class, 'item']);
+});
+*/
+
+/*
+Route::group([
+    'middleware' => 'set-locale'
+], function() {
+    foreach (config('languages') as $locale) {
+        //echo "locale: ".$locale."<br>";
+        if (config('app')['locale'] == $locale) {
+            echo "apps: ".config('app')['locale']."<br>";
+            echo __('about', [], $locale)."<br>";
+            Route::get(__('about', [], $locale), [StaticPagesController::class, 'about'])->name("about.{$locale}");
+        } else {
+            echo "no apps: ".config('app')['locale']."<br>";
+            Route::get("{$locale}/".__('paths.about', [], $locale), [StaticPagesController::class, 'about'])->name("about.{$locale}");
+        }
+    }
+});
+*/
+
+/*
+Route::group(['prefix' => '{locale?}'], function($locale = null) {
+    //Route::pattern('locale', 'uk'); // Only "uk" is valid for the locale parameter
+
+    Route::get('/', [IndexController::class, 'index']);
+    // Add more localized routes here...
+});
+*/
+/*
+Route::post('/uploadfile', [DriversPayableTimeController::class, 'uploadFile' ]);
+Route::get('/total', [DriversPayableTimeController::class, 'getTotalMinutesWithPassenger' ]);
+Route::group(['middleware' => ['cors']], function() {
+    Route::get('/angular', [DriversPayableTimeController::class, 'angular' ]);
+    Route::get('/angular_order/{order}', [DriversPayableTimeController::class, 'angularOrder' ]);
+});
+# for phpunit testing 
+Route::post('/store', [DriversPayableTimeController::class, 'store']);
+Route::get('/store', [DriversPayableTimeController::class, 'store']);
+*/

@@ -119,9 +119,55 @@ class DriversPayableTimeController extends Controller
     /**
      * @return JsonResponse
      */
-    public function angular(): JsonResponse
+    public function angular()
     {
-        $drivers = $this->getTotalMinutesWithPassenger();
-        return response()->json($drivers);
+
+        $test = new Test;
+	    $test->prop = 'value'; // var_dump метода __set выведет 'prop value'  
+        /*
+        $a = new A(); 
+        $c = clone($a); 
+        $a->q = 2; 
+        $c->q = 3; 
+        echo "<pre>";  
+        print_r($a);
+        print_r($c);
+        echo "</pre>"; 
+        $obj = new MethodTest;
+        $obj->runTest('в контексте объекта');
+        MethodTest::runTest('в статическом контексте');
+        */
+       /// $drivers = $this->getTotalMinutesWithPassenger();
+       // return response()->json($drivers);
+    }
+
+  
+    
+}
+
+class Test
+	{
+		private $prop1;
+		private $prop2;
+		
+		public function __set($property, $value)
+		{
+			var_dump($property . ' ### ' .$value);
+		}
+	}
+class A { 
+    public int $q = 1; 
+}
+class MethodTest {
+    public function __call($name, $arguments) {
+        // Замечание: значение $name регистрозависимо.
+        echo "Вызов метода '$name' "
+             . implode(', ', $arguments). "<br>";
+    }
+
+    public static function __callStatic($name, $arguments) {
+        // Замечание: значение $name регистрозависимо.
+        echo "Вызов статического метода '$name' "
+             . implode(', ', $arguments). "\n";
     }
 }
