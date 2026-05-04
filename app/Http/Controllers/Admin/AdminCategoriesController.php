@@ -14,6 +14,7 @@ use App\Http\Requests\UpdateCategoryRequest;
 use App\Repositories\Admin\CategoryRepository;
 use App\Repositories\Admin\CategoriesLocalizationRepository;
 use Session;
+use Illuminate\Support\Facades\Log;
 
 class AdminCategoriesController extends Controller
 {
@@ -42,13 +43,14 @@ class AdminCategoriesController extends Controller
             ['title' => 'Home', 'url' => route('admin.index', $locale)],
             ['title' => $pageTitle, 'url' => '']
         ];
-        $statuses = ['active', 'hidden'];
+
         //////
-        return view('admin.categories.index', compact('categories', 'locale', 'sideBarData', 'breadcrumbs', 'statuses'));
+        return view('admin.categories.index', compact('categories', 'locale', 'sideBarData', 'breadcrumbs'));
     }
 
-    public function create()
+    public function create(string $locale,  int $catagoryId)
     {
+      
         $languages = Language::cases();
         $status = Status::cases();
         //$categories = Category::all();
@@ -59,7 +61,7 @@ class AdminCategoriesController extends Controller
             //$select[] = ["id" => $category->id, "name" => $category->name];
         }
         $select = Category::pluck('name', 'id');*/
-        return view('admin.categories.create', compact(['categories', 'languages', 'status']));
+        return view('admin.categories.create', compact(['categories', 'languages', 'status', 'locale', 'sideBarData', 'breadcrumbs']));
     }
 
     public function store(Request $request)
@@ -113,9 +115,14 @@ class AdminCategoriesController extends Controller
         foreach($categories as $categoryItem){
             $select[$categoryItem->id] = $categoryItem->name;
         }
+         /////
+
+
         //$select = Category::lists('name', 'id');
         $select = Category::pluck('name', 'id');
         $pageTitle = "Cat";
+        $sideBarData = [];
+        $sideBarData['title'] = $pageTitle;
         $breadcrumbs = [
             ['title' => 'Home', 'url' => route('admin.index', $locale)],
             ['title' => 'Category', 'url' => route('admin.category.index', $locale)],
@@ -124,21 +131,29 @@ class AdminCategoriesController extends Controller
        /* echo "<pre>";
         print_r($category);
         echo "</pre>";*/
-        return view('admin.categories.edit', compact('breadcrumbs', 'category', 'categories', 'select', 'categoryLocalizes', 'locale'));
+        return view('admin.categories.edit', compact('breadcrumbs', 'category', 'sideBarData', 'categories', 'select', 'categoryLocalizes', 'locale'));
     }
 
-    public function update(UpdateCategoryRequest $request)
+    public function update(string $locale, int $id, UpdateCategoryRequest $request)
     {
-        $id = $request->input('id');
+       /* $id = $request->input('id');
         $name = $request->input('name');
-        $locale = $request->input('locale');
+        $locale = $request->input('locale');*/
         /////////////
-     
+        /*echo "<pre>";
+        print_r($request->all());
+        echo "</pre>";
+         echo "locale:".$locale."<br>";
+         echo "id:".$id."<br>";
+       exit;*/
+      
         ///////////////////
-        echo "<pre>";
+       /* echo "<pre>";
         print_r($request->validated());
         echo "</pre>";
-       //exit;
+      exit;*/
+      
+           
         ////////////////
         // Store the file in storage\app\public folder
        /* $request->validate([
@@ -160,27 +175,40 @@ class AdminCategoriesController extends Controller
      
         /////////////////////////
       
-       echo ":::".$name;
-     echo ":::". $id;
+     //  echo ":::".$name;
+     //echo ":::". $id;
      //exit;
         //$item = $this->categoryRepository
         //$item = CategoriesLocalization::find($id);
           //  $item = CategoriesLocalization::where('category_id', $category_id)
            // ->where('lang', $locale)
            // ->first(); // or firstOrFail()
-        $item = Category::find($id);
-        if ($item) {
-            echo ":::".$item->name;
+        try {
+            $item = Category::find($id);
+        
+            echo ":::".$item->name."<br>";
             $item->update($request->validated());
-        } else {
-            echo "no update <br>";
-        }
+
+             Log::info('Category updated successfully: ' . $item->id);
+
+            return redirect()->route('admin.category.edit', ['locale' => $locale, 'id' => $item->id])
+                           ->with('success', 'category updated successfully!');
+
+
+            } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+                Log::warning('category not found: ' . $id);
+               /* return redirect()->route('admin.category.index', ['locale' => $locale])
+                            ->with('error', 'category not found.');*/
+
+            } catch (\Exception $e) {
+                Log::error('Error updating category: ' . $e->getMessage());
+               // exit;
+                return redirect()->back()
+                            ->with('error', 'Failed to update category. Please try again.');
+            }
        // exit;
         // redirect
-        Session::flash('message', 'Successfully updated shark!');
-
-        return redirect()->route('admin.category.index', ['locale' => $locale])
-                        ->with('success', 'Item updated successfully.');
+   
     }
     public function updateStatus($locale, Request $request)
     {
@@ -188,8 +216,10 @@ class AdminCategoriesController extends Controller
         $name = $request->input('name');
        // $locale = $request->input('locale');
         $status = $request->input('status');
+        echo "category_id:::".$category_id."<br>";
         echo "status:::".$status."<br>";
         echo "locale:::".$locale."<br>";
+        //exit;
         /////////////
         $item = Category::findOrFail($category_id);
         if ($item) {
@@ -198,7 +228,7 @@ class AdminCategoriesController extends Controller
         } else {
             echo "no update <br>";
         }
-       // exit;
+        //exit;
         // redirect
         Session::flash('message', 'Successfully updated shark!');
 

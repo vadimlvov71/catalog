@@ -16,7 +16,7 @@ class CategoriesLocalization  extends Model
         'description',
         'item_image',
         'category_id',
-        'lang'
+        'locale'
     ];
     /**
      * @return [type]

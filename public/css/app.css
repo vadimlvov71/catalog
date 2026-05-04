@@ -33,6 +33,9 @@ a {
     background:#f4f4f7;
     border: 1px solid #000;
 }
+.category-row{
+    padding-bottom:19px ;
+}
 #wrapper {
     overflow-x: hidden;
 }

@@ -16,9 +16,12 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->text('description');
-            $table->string('image');
+            $table->string('price');
+            $table->string('image')->nullable();
             $table->string('url');
             $table->string('status', 12);
+            $table->string('status_index_page_show', 12)->nullable();
+            $table->string('status_index_page_action', 12)->nullable();
             $table->timestamps();
         });
     }

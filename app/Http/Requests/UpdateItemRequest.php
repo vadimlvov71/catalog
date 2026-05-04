@@ -25,12 +25,18 @@ class UpdateItemRequest extends FormRequest
         // Get the item ID from the route
         $itemId = $this->route('item') ?? $this->route('id');
         return [
-            /*'user_id' => [
-                'sometimes',
-                Rule::unique('companies', 'user_id')->ignore($this->route('id'), 'id'),
-                Rule::exists('users', 'id'),
-            ],*/
-
+            'category_id' => [
+                'required',
+                //Rule::exists('users', 'id'),
+            ],
+            'status' => [
+                'required',
+                //Rule::exists('users', 'id'),
+            ],
+            'price' => [
+                'required',
+                //Rule::exists('users', 'id'),
+            ],
             'name' => ['required', 
             'string', 'max:255',  
             Rule::unique('items', 'name')->ignore($this->route('id'), 'id'),  // ✅ Ignore current item]->ignore($itemId),  

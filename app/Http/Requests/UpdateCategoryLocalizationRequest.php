@@ -23,17 +23,34 @@ class UpdateCategoryLocalizationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            /*'user_id' => [
-                'sometimes',
-                Rule::unique('companies', 'user_id')->ignore($this->route('id'), 'id'),
-                Rule::exists('users', 'id'),
-            ],*/
-
-            'name' => ['required', 'string', 'max:255', 'unique:categories'],
+            'locale' => [
+                'required',
+                Rule::unique('categories_localizations')
+                    ->ignore($this->input('locale_id'))
+                    ->where(fn ($query) => 
+                    $query->where('category_id', $this->input('category_id'))
+                    
+                ),
+            ],
+            'category_id' => ['required', 'string', 'max:255'],
+            'name' => ['required', 
+            'string', 'max:255',  
+            Rule::unique('categories_localizations', 'name')->ignore($this->input('locale_id'), 'id'),  // ✅ Ignore current item]->ignore($itemId),  
+            ],
             'description' => ['required', 'string', 'max:5555'],
            
         ];
             //'company_email' => 'sometimes|email|unique:companies,company_email,' . $this->route('id'),
 
+    }
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Category name is required.',
+            'name.unique' => 'This category name already exists.',
+            'name.max' => 'Item name must not exceed 255 characters.',
+            'locale.unique' => 'This locale already exists.',
+            'description.required' => 'description is required.',
+        ];
     }
 }

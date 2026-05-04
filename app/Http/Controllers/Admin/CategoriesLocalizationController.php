@@ -15,6 +15,7 @@ use App\Http\Requests\UpdateCategoryLocalizationRequest;
 use App\Repositories\Admin\CategoryRepository;
 use App\Repositories\Admin\CategoriesLocalizationRepository;
 use Session;
+use Illuminate\Support\Facades\Log;
 
 class CategoriesLocalizationController extends Controller
 {
@@ -48,51 +49,65 @@ class CategoriesLocalizationController extends Controller
         return view('admin.categories.index', compact('categories', 'locale', 'sideBarData', 'breadcrumbs'));
     }
 */
-    public function create()
+    public function create($locale, $categoryId)
     {
+       /*   echo "locale: ".$locale."<br>";
+        exit;*/
         $languages = Language::cases();
         $status = Status::cases();
         //$categories = Category::all();
+        //$categories = Category::with('localizations')->get();
         $categories = Category::with('localizations')->get();
+        $category = Category::where('id', $categoryId)
+        ->first(); 
+        ///
+        $pageTitle = "Create";
+        $sideBarData = [];
+        $sideBarData['title'] = $pageTitle;
+        $breadcrumbs = [
+            ['title' => 'Home', 'url' => route('admin.index', $locale)],
+            ['title' => 'Category', 'url' => route('admin.category.index', $locale)],
+            ['title' => $category->name, 'url' => route('admin.category.edit', [$locale, $categoryId])],
+            ['title' => $pageTitle, 'url' => '']
+        ];
+        ////
         /*$select = [];
         foreach($categories as $category){
             $select[$category->id] = $category->name;
             //$select[] = ["id" => $category->id, "name" => $category->name];
         }
         $select = Category::pluck('name', 'id');*/
-        return view('admin.categories.create', compact(['categories', 'languages', 'status']));
+        return view('admin.categories.locales.create', compact(['breadcrumbs', 'categories', 'sideBarData', 'languages', 'status', 'locale', 'categoryId']));
     }
 
-    public function store(Request $request)
+    public function store(string $locale, int $categoryId,  UpdateCategoryLocalizationRequest $request)
     {
-        echo "<pre>";
+       /* echo "<pre>";
         print_r($request->all());
         echo "</pre>";
-       // exit;
+        echo "categoryId:".$categoryId."<br>";
+        echo "locale:".$locale."<br>";
+       exit;*/
         //$category["categoryId"] = "4";
-        $name = $request->input('name');
-        $category = $this->categoryRepository->setCatagory($request);
+       $name = $request->input('name');
+       $description = $request->input('description');
+       // $category = $this->categoryRepository->setCatagory($request);
       
-       echo "categoryId:".$category["categoryId"]."<br>";
-       // exit;
-        if($category["categoryId"]){
-            $catLocal = $this->categoriesLocalizationRepository->setCategoriesLocalization($name, $category["categoryId"]);
-            print_r($catLocal);
-        }else{
-            echo "error";
+        try {
+            if($categoryId){
+                $categoryLocale = CategoriesLocalization::create($request->validated());
+            }else{
+                echo "error";
+            }
+            return redirect()->route('admin.category.edit', [$locale, $categoryId])
+                    ->with('success', 'Item created successfully.');
+
+         } catch (\Exception $e) {
+                Log::error('Error updating category: ' . $e->getMessage());
+               // exit;
+                return redirect()->back()
+                            ->with('error', 'Failed to update locale category. Please try again.');
         }
-
-        //exit;
-        //$data =['category_id' => $request->category_id];
-        
-        $request->validate([
-            //'name' => 'required',
-            //'description' => 'required',
-            //'category_id' => 'category_id',
-        ]);
-
-        return redirect()->route('admin.category.index')
-                        ->with('success', 'Item created successfully.');
     }
 
     
@@ -118,7 +133,7 @@ class CategoriesLocalizationController extends Controller
         }
         //$select = Category::lists('name', 'id');
         $select = Category::pluck('name', 'id');
-        $locales = Config::get('app.available_locales');
+        //$locales = Config::get('app.available_locales');
         $pageTitle = $categoryLocalize->name;
         $sideBarData = [];
         $sideBarData['title'] = $pageTitle;
@@ -131,7 +146,7 @@ class CategoriesLocalizationController extends Controller
        /* echo "<pre>";
         print_r($categoryLocalizes);
         echo "</pre>";*/
-        return view('admin.categories.locales.edit', compact('sideBarData', 'breadcrumbs',  'categoryLocalize', 'category', 'categories', 'select', 'categoryLocalizes', 'locale', 'locales'));
+        return view('admin.categories.locales.edit', compact('sideBarData', 'breadcrumbs',  'categoryLocalize', 'category', 'categories', 'select', 'categoryLocalizes', 'locale'));
     }
 
     public function update($locale, $id, UpdateCategoryLocalizationRequest $request)
@@ -139,7 +154,10 @@ class CategoriesLocalizationController extends Controller
        // $id = $request->input('id');
         $name = $request->input('name');
         $locale_id = $request->input('locale_id');
-       
+      /*  echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
+       exit;*/
         /////////////////////////
       /* echo "locale:::".$locale."<br>";
        echo ":::".$name."<br>";
@@ -148,26 +166,33 @@ class CategoriesLocalizationController extends Controller
     exit;*/
        // $id = 4;
        // $locale = "en";
-        $item = CategoriesLocalization::find($locale_id);
-          //  $item = CategoriesLocalization::where('category_id', $category_id)
-           // ->where('lang', $locale)
-           // ->first(); // or firstOrFail()
-        //$item = Category::find($id);
-        if ($item) {
-            echo ":::".$item->name;
-            $item->update($request->validated());
-        } else {
-            echo "no update <br>";
-        }
-       // exit;
-        // redirect
-        Session::flash('message', 'Successfully updated shark!');
+        try {
+            $item = CategoriesLocalization::find($locale_id);
+            //  $item = CategoriesLocalization::where('category_id', $category_id)
+            // ->where('lang', $locale)
+            // ->first(); // or firstOrFail()
+            //$item = Category::find($id);
+            if ($item) {
+                echo ":::".$item->name;
+                $item->update($request->validated());
+            } else {
+                echo "no update <br>";
+            }
+        // exit;
+            // redirect
+            Session::flash('message', 'Successfully updated shark!');
 
-        return redirect()->route('admin.category.local.edit', 
-        ['locale' => $locale,
-        'id' => $locale_id
-        ])
-                        ->with('success', 'Item updated successfully.');
+            return redirect()->route('admin.category.locale.edit', 
+            ['locale' => $locale,
+            'locale_id_id' => $locale_id
+            ])
+            ->with('success', 'Item updated successfully.');
+        } catch (\Exception $e) {
+                Log::error('Error updating category: ' . $e->getMessage());
+               // exit;
+                return redirect()->back()
+                            ->with('error', 'Failed to update locale category.' . $e->getMessage());
+        }
     }
 
     public function destroy(Item $Item)

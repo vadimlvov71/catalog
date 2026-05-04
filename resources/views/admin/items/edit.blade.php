@@ -11,13 +11,15 @@
         <div class="row justify-content-center align-items-center">
             <div class="col-10 col-md-8 col-lg-6">
                 <h1>Edit Post</h1>
-                @error('name', 'description', 'category_id')
+                @error('name', 'description', 'price', 'category_id')
                     <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
-            
+                
                 <form action="{{ route('admin.item.update', [$locale, $item->id]) }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                
+                    {{-- Include the reusable form partial --}}
+                    @include('admin.partials._form', ['item' => $item])
+                    <!--
                     <div>
                         <label>Title</label>
                         <input type="text" name="name" value="{{ $item->name }}" >
@@ -25,9 +27,9 @@
                     <div>
                         <label>Url</label>
                         <input type="text" name="url" value="{{ $item->url }}" >
-                        <!--<label>Content</label>
-                        <textarea name="description" required>{{ $item->description }}</textarea>
-                        -->
+                        <label>Content</label>
+                        <textarea name="description" >{{ $item->description }}</textarea>
+                        
                     </div>
                     <div>
                         <label>Category_id</label>
@@ -37,6 +39,7 @@
                         <label>Image</label>
                         <input type="file" name="file_upload">
                     </div>
+                    -->
                     <button type="submit">Update</button>
                 </form>
             </div>

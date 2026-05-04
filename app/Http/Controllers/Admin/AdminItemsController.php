@@ -29,47 +29,68 @@ class AdminItemsController extends Controller
         return view('admin.items.index', compact('items', 'sideBarData', 'locale', 'breadcrumbs'));
     }
 
-    public function create()
+    public function create(string $locale)
     {
         $categories = Category::all();
         $select = [];
+          /////
+        $pageTitle = "Create Edit Item";
+        $pageItems = "Items";
+        $sideBarData = [];
+        $sideBarData['title'] = $pageTitle;
+        $breadcrumbs = [
+            ['title' => 'Home', 'url' => route('admin.index', $locale)],
+            ['title' => $pageItems, 'url' => route('admin.item.index', $locale)],
+            ['title' => $pageTitle, 'url' => '']
+        ];
+        //////
         foreach($categories as $category){
             $select[$category->id] = $category->name;
             //$select[] = ["id" => $category->id, "name" => $category->name];
         }
         $select = Category::pluck('name', 'id');
-        return view('admin.items.create', compact(['categories','select']));
+        return view('admin.items.create', compact(['categories','select', 'sideBarData', 'categories', 'select', 'locale', 'breadcrumbs']));
     }
 
-    public function store(Request $request)
+    public function store(string $locale, UpdateItemRequest $request)
     {
-        // Validate the incoming file. Refuses anything bigger than 2048 kilobyes (=2MB)
-        $request->validate([
-            'file_upload' => 'required|mimes:jpg,png|max:2048',
-        ]);
-        //$path = $request->file('avatar')->store('avatars');
-        // Store the file in storage\app\public folder
-        $file = $request->file('file_upload');
-        $fileName = $file->getClientOriginalName();
-        $filePath = $file->store('uploads', 'public');
-
-        // Store file information in the database
-        $uploadedFile = new UploadedFile();
-        $uploadedFile->filename = $fileName;
-        $uploadedFile->original_name = $file->getClientOriginalName();
-        $uploadedFile->file_path = $filePath;
-        $uploadedFile->save();
-
-        $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'category_id' => 'category_id',
-        ]);
-
-        Item::create($request->all());
+        /*
+        echo "<pre>";
+        print_r($request->validated());
+        echo "</pre>";
+        echo "locale:::".$locale."<br>";
         exit;
+        */
+        try {
+            // Get validated data
+            $validated = $request->validated();
+            // Validate the incoming file. Refuses anything bigger than 2048 kilobyes (=2MB)
+                
+        
+        
+            //$path = $request->file('avatar')->store('avatars');
+            // Store the file in storage\app\public folder
+            /*$file = $request->file('file_upload');
+            $fileName = $file->getClientOriginalName();
+            $filePath = $file->store('uploads', 'public');
 
-        return redirect()->route('admin.item.index')
+            // Store file information in the database
+            $uploadedFile = new UploadedFile();
+            $uploadedFile->filename = $fileName;
+            $uploadedFile->original_name = $file->getClientOriginalName();
+            $uploadedFile->file_path = $filePath;
+            $uploadedFile->save();*/
+
+
+            Item::create($request->all());
+            //exit;
+
+        } catch (\Exception $e) {
+            Log::error('Error insert item: ' . $e->getMessage());
+            return redirect()->back()
+                            ->with('error', 'Failed to update item. Please try again.');
+        }
+            return redirect()->route('admin.item.index', $locale)
                         ->with('success', 'Item created successfully.');
     }
 
@@ -82,11 +103,13 @@ class AdminItemsController extends Controller
     {
         $categories = Category::all();
         /////
-        $pageTitle = "Items";
+        $pageTitle = "Edit Item";
+        $pageItems = "Items";
         $sideBarData = [];
         $sideBarData['title'] = $pageTitle;
         $breadcrumbs = [
             ['title' => 'Home', 'url' => route('admin.index', $locale)],
+            ['title' => $pageItems, 'url' => route('admin.item.index', $locale)],
             ['title' => $pageTitle, 'url' => '']
         ];
         //////
@@ -102,10 +125,11 @@ class AdminItemsController extends Controller
 
     public function update(string $locale, int $id, UpdateItemRequest $request)
     {
+        
         try {
             // Get validated data
             $validated = $request->validated();
-            /*
+         /*   
         echo "<pre>";
         print_r($request->validated());
         echo "</pre>";
@@ -174,7 +198,38 @@ class AdminItemsController extends Controller
         return redirect()->route('admin.item.index')
                         ->with('success', 'Item updated successfully.');
     }
+    public function updateStatus($locale, Request $request)
+    {
+        $category_id = $request->input('category_id');
+        $name = $request->input('name');
+       // $locale = $request->input('locale');
+        $status = $request->input('status');
+        /*
+        echo "category_id:::".$category_id."<br>";
+        echo "status:::".$status."<br>";
+        echo "locale:::".$locale."<br>";
+        */
+       // exit;
+        /////////////
+        $item = Item::findOrFail($category_id);
+        if ($item) {
+            echo ":::".$item->name;
+            $item->update(['status' => $status]);
+        } else {
+            echo "no update <br>";
+        }
+        //exit;
+        // redirect
+        Session::flash('message', 'Successfully updated shark!');
 
+        return redirect()->route('admin.item.index', ['locale' => $locale])
+                        ->with('success', 'Status updated successfully.');
+                        
+        ///////////////////
+       /* echo "<pre>";
+        print_r($request->all());
+        echo "</pre>";*/
+    }
     public function destroy(Item $Item)
     {
         $Item->delete();

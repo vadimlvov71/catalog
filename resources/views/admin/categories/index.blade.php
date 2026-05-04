@@ -3,14 +3,12 @@
 @parent
    @include('admin.components.sidebarMenu', ['sideBarData' => $sideBarData, 'categories' => $categories, 'locale' => $locale])
 @endsection
+
 @section('content')
     <h1>{{__('admin.categories')}}</h1>
-   
-    @if ($message = Session::get('success'))
-        <div>{{ $message }}</div>
-    @endif
     @include('layouts.include.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
-      <a href="{{ route('admin.category.create', $locale) }}">{{__('create_category')}}</a>
+    @include('admin.components.message', ['errors' => $errors])
+    <a href="{{ route('admin.category.create', $locale) }}">{{__('create_category')}}</a>
         <table>
             <tr>
                 <th>Id</th>
@@ -25,20 +23,23 @@
                 <td>{{ $item->id }}</td>
                 <td>{{ $item->name }}</td>
                 <td>{{ $item->url }}</td>
-                
+                <td>
+                    @if ($item->image)
+                        <div>
+                            <img src="{{ Storage::url('uploads/' . $item->image) }}" 
+                             alt="{{ $item->name }}"
+                             class="img-fluid"
+                             style="max-width: 90px; object-fit: cover;">
+                        </div>
+                    @else
+                        <label>Image</label>
+                       
+                    @endif
+                </td>
                 <td>
                     <form id="formId{{ $item->id }}" method="POST" action="{{ route('category.updateStatus', $locale) }}">
                         @csrf
-                        <input type="hidden" name="category_id" value="{{ $item->id }}">
-                        <select name="status" id="status{{ $item->id }}" class="form-control status-select" 
-                            data-form-id="formId{{ $item->id }}">
-                            @foreach($statuses as $status)
-                                <option value="{{ $status }}" 
-                                        {{ $item->status == $status ? 'selected' : '' }}>
-                                    {{ $status }}
-                                </option>
-                            @endforeach
-                        </select>
+                        @include('admin.components.selectStatus', ['statuses' => $statuses])
                     </form>
                 </td>
                 <td>{{ $item->updated_at->format('d-m-Y') }}</td>

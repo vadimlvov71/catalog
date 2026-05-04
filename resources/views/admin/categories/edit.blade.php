@@ -1,14 +1,16 @@
 @extends('layouts.admin')
+@section('sidebar')
+@parent
+   @include('admin.components.sidebarMenu', ['sideBarData' => $sideBarData, 'categories' => $categories, 'locale' => $locale])
+@endsection
 
 @section('content')
-<div class="container h-100 mt-5">
-        <div class="row h-100 justify-content-center align-items-center">
-            <div class="col-12">
+<div class="container mt-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-12">
             @include('layouts.include.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
-    <h1>Edit Category</h1>
-    @error('name', 'description', 'category_id')
-        <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
+            @include('admin.components.message', ['errors' => $errors])
+            <h1>Edit Category</h1>
         <table>
             <tr>
                 <th>Title</th>
@@ -16,6 +18,7 @@
                 <th>Actions</th>
                 <th>updated</th>
             </tr>
+ 
                 <form action="{{ route('admin.category.update', ['id' => $category->id, 'locale' => $locale]) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                 
@@ -28,31 +31,68 @@
                     </div>
                     <div>
                         <label>url</label>
-                        <input type="text" name="url" required value="{{ $category->url }}">
+                        <input type="text" class="form-control @error('url') is-invalid @enderror" name="url" required value="{{ $category->url }}">
                     </div>
-                
+                    @error('url')
+                        <div class="invalid-feedback d-block">
+                            <i class="fa fa-times-circle mr-1"></i> {{ $message }}
+                        </div>
+                    @enderror
+
                     <div>
-                        <label>Image</label>
-                        <input type="file" name="file_upload">
+                        <label>status </label>
+                        <select name="status" id="status{{ $category->id }}" class="form-control status-select" 
+                            data-form-id="formId{{ $category->id }}">
+                            @foreach($statuses as $status)
+                                <option value="{{ $status }}" 
+                                {{ old('status', $category->status ?? '') == $status->value ? 'selected' : '' }}>
+                                       
+                                    {{ $status }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
+                    @error('status')
+                        <div class="invalid-feedback d-block">
+                            <i class="fa fa-times-circle mr-1"></i> {{ $message }}
+                        </div>
+                    @enderror
+                    
                     <button type="submit">Update</button>
                 </form>
+
+                <div>
+                        <div>
+                            <img src="{{ Storage::url('uploads/' . $category->image) }}" 
+                             alt="{{ $category->name }}"
+                             class="img-fluid"
+                             style="max-height: 400px; object-fit: cover;">
+                        </div>
+                   
+                        <label>Image</label>
+                        @include('admin.components.upload', ['type' => 'category', 'id' => $category->id])
+                    
+                    
+                </div>
             </div>
+            </table>
+            <table>
+            <tr>
+                <th>Id</th>
+                <th>locale</th>
+                <th>Title</th>
+
+                <th>updated</th>
+            </tr>
+            <a href="{{ route('admin.category.locale.create', [$locale, $category->id]) }}">{{__('create_category_locale')}}</a>
              @foreach ($categoryLocalizes as $item)
                 <tr>
                     <td>{{ $item->id }}</td>
-                
+                    <td>{{ $item->locale }}</td>
                     <td>{{ $item->name }}</td>
-                    <td>{{ $item->description }}</td>
-                    <td>{{ $item->updated_at }}</td>
+                    <td>{{ $item->updated_at->format('d-m-Y') }}</td>
                     <td>
-                        <a href="{{ route('admin.item.show') }}">View</a>
-                        <a href="{{ route('admin.category.local.edit', [$locale, $item->id]) }}">Edit</a>
-                        <form action="" method="item" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit">Delete</button>
-                        </form>
+                        <a href="{{ route('admin.category.locale.edit', [$locale, $item->id]) }}">Edit</a>
                     </td>
                 </tr>
             @endforeach

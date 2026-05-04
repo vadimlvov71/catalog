@@ -1,4 +1,8 @@
 @extends('layouts.admin')
+@section('sidebar')
+@parent
+   @include('admin.components.sidebarMenu', ['sideBarData' => $sideBarData, 'categories' => $categories, 'locale' => $locale])
+@endsection
 
 @section('content')
    

@@ -11,9 +11,11 @@ use App\Http\Controllers\Admin\AdminItemsController;
 use App\Http\Controllers\Admin\AdminCategoriesController;
 use App\Http\Controllers\Admin\AdminLocaleController;
 use App\Http\Controllers\Admin\CategoriesLocalizationController;
+use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\StaticPagesController;
 use App\Http\Controllers\Local\ChangeLanguageController;
 use App\Http\Controllers\Error\ErrorsHandlingController;
+
 use App\Http\Middleware\Localization;
 use App\Http\Middleware\SetLocal;
 use Illuminate\Support\Facades\Config;
@@ -56,24 +58,30 @@ Route::middleware(['check.auth'])->group(function () {
     Route::get('/manager_secret', [AdminController::class, 'locale'])->name('admin.locale');
     Route::get('/manager_secret/{locale}', [AdminController::class, 'index'])->name('admin.index');
     Route::get('/manager_secret/{locale}/items', [AdminItemsController::class, 'index'])->name('admin.item.index');
-    Route::match(['get', 'post'], '/manager_secret/item/create', [AdminItemsController::class, 'create'])->name('admin.item.create');
-    Route::post('/manager_secret/item/store', [AdminItemsController::class, 'store'])->name('item.store');
+    Route::match(['get', 'post'], '/manager_secret/{locale}/item/create', [AdminItemsController::class, 'create'])->name('admin.item.create');
+    Route::post('/manager_secret/{locale}/item/store', [AdminItemsController::class, 'store'])->name('item.store');
     Route::post('/manager_secret/{locale}/item/update/{id}', [AdminItemsController::class, 'update'])->name('admin.item.update');
     Route::get('/manager_secret/item/show', [AdminItemsController::class, 'show'])->name('admin.item.show');
     Route::get('/manager_secret/{locale}/item/edit/{id}', [AdminItemsController::class, 'edit'])->name('admin.item.edit');
     Route::get('/manager_secret/locale/{locale}', [AdminItemsController::class, 'edit'])->name('admin.item.edit');
+    Route::post('/manager_secret/{locale}/item/update-status', [AdminItemsController::class, 'updateStatus'])
+    ->name('item.updateStatus');
 
     Route::get('/manager_secret/{locale}/categories', [AdminCategoriesController::class, 'index'])->name('admin.category.index');
     Route::get('/manager_secret/{locale}/categories/edit/{id}', [AdminCategoriesController::class, 'edit'])->name('admin.category.edit');
-    Route::match(['get', 'post'], '/manager_secret/{locale}/category/create', [AdminCategoriesController::class, 'create'])->name('admin.category.create');
-    Route::post('/manager_secret/category/store', [AdminCategoriesController::class, 'store'])->name('admin.category.store');
-    Route::post('/manager_secret/category/update', [AdminCategoriesController::class, 'update'])->name('admin.category.update');
-
-    Route::get('/manager_secret/{locale}/categories/name_locale/edit/{id}', [CategoriesLocalizationController::class, 'edit'])->name('admin.category.local.edit');
-    Route::post('/manager_secret/{locale}/categories/name_locale/update/{id}', [CategoriesLocalizationController::class, 'update'])->name('admin.category.local.update');
-    
+    Route::match(['get', 'post'], '/manager_secret/{locale}/categories/create', [AdminCategoriesController::class, 'create'])->name('admin.category.create');
+    Route::post('/manager_secret/categories/store', [AdminCategoriesController::class, 'store'])->name('admin.category.store');
+    Route::post('/manager_secret//{locale}/categories/update/{id}', [AdminCategoriesController::class, 'update'])->name('admin.category.update');
     Route::post('/manager_secret/{locale}/categories/update-status', [AdminCategoriesController::class, 'updateStatus'])
     ->name('category.updateStatus');
+    
+    Route::get('/manager_secret/{locale}/categories/name_locale/create/{catagoryId}', [CategoriesLocalizationController::class, 'create'])->name('admin.category.locale.create');
+    Route::post('/manager_secret/{locale}/category/name_locale/store/{catagoryId}', [CategoriesLocalizationController::class, 'store'])->name('admin.category.locale.store');
+    Route::get('/manager_secret/{locale}/categories/name_locale/edit/{id}', [CategoriesLocalizationController::class, 'edit'])->name('admin.category.locale.edit');
+    Route::post('/manager_secret/{locale}/categories/name_locale/update/{id}', [CategoriesLocalizationController::class, 'update'])->name('admin.category.locale.update');
+    
+    Route::post('/manager_secret/image/upload/{type}/{id}', [ImageController::class, 'store'])->name('admin.image.store');
+
     
     Route::get('/manager_secret/locale/{locale}', [AdminLocaleController::class, 'set'])->name('admin.language.set');
     #Route::match(['get', 'post'], '/manager_secret/language/create', [AdminLanguagesController::class, 'create'])->name('admin.language.create');

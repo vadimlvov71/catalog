@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name')->charset('utf8mb4')->collation('utf8mb4_unicode_ci');
             $table->text('description')->charset('utf8mb4')->collation('utf8mb4_unicode_ci');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            $table->string('lang', 6)->nullable(); 
+            $table->string('locale', 10)->nullable(); 
             $table->timestamps();
         });
     }

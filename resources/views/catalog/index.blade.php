@@ -15,30 +15,40 @@
     <main>
         <div class="row">
             @foreach ($categories as $category)
-                {{$category->getLocalName($locale)}}
-
+               
                 {{--   @foreach ($category->getLocalName($locale) as $object) --}}
-                <div class='col-sm-12 category-block'>
-                    <a href="{{ route('category', ['locale' => $locale, 'category' => $category->url]) }}">
-                        {{ $category->name}}
-                    </a>
-                </div>
-                {{--   @endforeach   --}}
-                @if ($category->items)
-                    @foreach ($category->items as $items)
-                        <div class='col-sm-3'>
-                            <div class='card'>
-                                <div class='title-item'>
-                                    @foreach ($items->getLocalName($locale) as $item)
-                                        {{$item['name']}}
-                                    @endforeach
-                                </div>
-                                <img src="{{url('/images')}}/{{$items->image}}" height="120" style="" alt="{{ $items->name }}">
+                <div class='col-sm-4 category-row' >
+                    <div class="card category-block">
+                        <div class="card-body">
+                            <a href="{{ route('category', ['locale' => $locale, 'category' => $category->url]) }}">
+                               {{-- {{ $category->name}}  --}} 
+                                {{ $category->getLocalName($locale)}}
+                                <img src="{{ Storage::url('uploads/' . $category->image) }}" 
+                                alt="{{ $category->name }}"
+                                class="img-fluid"
+                                style="max-height: 400px; object-fit: cover;">
+                            </a>
                             </div>
-                        </div>
-                    @endforeach
-                @endif
+                    
+                        {{--   @endforeach   --}}
+                        @if ($category->items)
+                            @foreach ($category->items as $items)
+                                <div class='col-sm-3'>
+                                    <div class='card'>
+                                        <div class='title-item'>
+                                            @foreach ($items->getLocalName($locale) as $item)
+                                                777{{$item['name']}}
+                                            @endforeach
+                                        </div>
+                                        <img src="{{url('/images')}}/{{$items->image}}" height="120" style="" alt="{{ $items->name }}">
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
             @endforeach
+            
         </div>
         <div class="row">
             <div class="col-sm">

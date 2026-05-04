@@ -35,24 +35,24 @@ class Category extends Model
     {
         return $this->hasMany(CategoriesLocalization::class);
     }
-    public function getLocalName($lang)
+    public function getLocalName($locale)
     {
-        return $this->localizations()->where('lang', $lang)->first()?->name ?? '';
+        return $this->localizations()->where('locale', $locale)->first()?->name ?? '';
     }
     public function getLocalName1()
     {
         return $this->localizations()->first()?->name ?? '';
     }
-    public function getLocalNameOne($lang, $category_id)
+    public function getLocalNameOne($locale, $category_id)
     {
         return $this->hasOne(CategoriesLocalization::class)->where([
-            ['lang', '=', $lang],
+            ['locale', '=', $locale],
             ['category_id', '=', $category_id],
         ]);
         //return $this->locals()->where('lang', '=', $lang)->get();
     }
-    public function getLocalId($lang)
+    public function getLocalId($locale)
     {
-        return $this->localizations()->where('lang', $lang)->first()?->id ?? '';
+        return $this->localizations()->where('locale', $locale)->first()?->id ?? '';
     }
 }
