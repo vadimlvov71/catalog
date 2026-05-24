@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 use App\Enums\ItemStatus;
 use App\Enums\Language;
+use App\Enums\IndexStatus;
 
 
 class ViewServiceProvider extends ServiceProvider
@@ -23,6 +24,9 @@ class ViewServiceProvider extends ServiceProvider
         });
         View::composer(['admin.items.*', 'admin.categories.*'], function ($view) {
             $view->with('locales', Config::get('app.available_locales'));
+        });
+        View::composer(['admin.items.*', 'admin.categories.*'], function ($view) {
+            $view->with('indexStatuses', IndexStatus::cases());
         });
         
 ;

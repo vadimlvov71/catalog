@@ -5,11 +5,16 @@
 @section('content')
 <div class="container">
     <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="display-4">Fluid jumbotron</h1>
-            <h1>{{ $title }}</h1>
-            <p>{{ $description }}</p>
-            <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+        <div class="lazy-bg" data-bg="{{ asset('images/potentional_clients1.jpg') }}">
+      <!--<img class="lazy-bg" src="{{ asset('images/potentional_clients1.jpg') }}" alt="Описание">-->
+            <div class="jumbotron-container">
+                <div class="jumbotron-content1">
+                    <h1 class="display-4">Fluid jumbotron</h1>
+                    <h1>{{ $title }}</h1>
+                    <p>{{ $description }}</p>
+                    <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+                </div>
+            </div>
         </div>
     </div>
     <main>

@@ -12,14 +12,55 @@ a {
     border-radius: 7px !important;
     border-color: #e1e7ec;
 }
+ .collapse {
+      display: none;
+    }
+    .collapse.show {
+      display: block;
+    }
+/*
 .jumbotron {
   background-image: url('/images/potentional_clients1.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  color: white; /* Adjust text color for readability */
-}
+  color: white; /* Adjust text color for readability 
 
+}
+*/
+.jumbotron.lazy-bg .jumbotron-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.jumbotron.lazy-bg {
+  position: relative;
+  width: 100%;
+  padding-top: 40%; /* соотношение сторон, например 40% — можно изменить под нужный */
+  background-color: #e9ecef; /* стандартный цвет jumbotron */
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 2rem;
+}
+/*
+.lazy-bg {
+    width: 100%; 
+  height: 100%; 
+  background-color: #db9595; 
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+  */
+.lazy-bg > .jumbotron-content {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+}
 .mb-30 {
     margin-bottom: 30px !important;
 }
@@ -120,3 +161,16 @@ a {
     border-radius: .2rem;
 }
 
+  .sidebar {
+      min-height: 100vh;
+      background-color: #f8f9fa;
+      padding-top: 1rem;
+    }
+    .category-photo {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+    .card-deck {
+      margin-top: 1rem;
+    }

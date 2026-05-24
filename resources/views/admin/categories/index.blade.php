@@ -14,7 +14,9 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>Url</th>
+                <th>Image</th>
                 <th>Status</th>
+                <th>Index page</th>
                 <th>updated</th>
                 <th>-</th>
             </tr>
@@ -39,7 +41,13 @@
                 <td>
                     <form id="formId{{ $item->id }}" method="POST" action="{{ route('category.updateStatus', $locale) }}">
                         @csrf
-                        @include('admin.components.selectStatus', ['statuses' => $statuses])
+                        @include('admin.components.selectStatus', ['indexStatuses' => $indexStatuses])
+                    </form>
+                </td>
+                <td>
+                    <form id="formIndexId{{ $item->id }}" method="POST" action="{{ route('category.updateIndexStatus', $locale) }}">
+                        @csrf
+                        @include('admin.components.selectIndexStatus', ['statuses' => $statuses])
                     </form>
                 </td>
                 <td>{{ $item->updated_at->format('d-m-Y') }}</td>
@@ -68,6 +76,21 @@
                     const formId = this.getAttribute('data-form-id');
                     const form = document.getElementById(formId);
                     
+                    if (form) {
+                        form.submit();
+                    }
+                });
+            });
+
+            document.querySelectorAll('.status-index').forEach(select => {
+            console.log('status-index');
+                select.addEventListener('change', function() {
+                    const formId = this.getAttribute('data-form-id');
+                    console.log('formId');
+                    console.log(formId);
+                    let form = document.getElementById(formId);
+                    console.log('form');
+                    console.log(form);
                     if (form) {
                         form.submit();
                     }

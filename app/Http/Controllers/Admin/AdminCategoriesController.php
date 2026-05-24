@@ -216,11 +216,14 @@ class AdminCategoriesController extends Controller
         $name = $request->input('name');
        // $locale = $request->input('locale');
         $status = $request->input('status');
+        /*
         echo "category_id:::".$category_id."<br>";
         echo "status:::".$status."<br>";
         echo "locale:::".$locale."<br>";
-        //exit;
+        exit;
+        */
         /////////////
+        
         $item = Category::findOrFail($category_id);
         if ($item) {
             echo ":::".$item->name;
@@ -235,6 +238,52 @@ class AdminCategoriesController extends Controller
         return redirect()->route('admin.category.index', ['locale' => $locale])
                         ->with('success', 'Status updated successfully.');
                         
+        ///////////////////
+       /* echo "<pre>";
+        print_r($request->all());
+        echo "</pre>";*/
+    }
+    public function updateIndexStatus($locale, Request $request)
+    {
+        $category_id = $request->input('category_id');
+        $name = $request->input('name');
+       // $locale = $request->input('locale');
+        $indexStatus = $request->input('indexStatus');
+        /*
+        echo "category_id:::".$category_id."<br>";
+        echo "indexStatus:::".$indexStatus."<br>";
+        echo "locale:::".$locale."<br>";
+        exit;
+        */
+        /////////////
+        try {
+            $item = Category::findOrFail($category_id);
+            if ($item) {
+                echo ":::".$item->name;
+                $item->update(['status_index_page_show' => $indexStatus]);
+                  Session::flash('message', 'Successfully updated index view!');
+
+                return redirect()->route('admin.category.index', ['locale' => $locale])
+                            ->with('success', 'Status of showing index page updated successfully.');
+
+            } else {
+                echo "no update <br>";
+            }
+            } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::warning('category not found: ' . $id);
+            /* return redirect()->route('admin.category.index', ['locale' => $locale])
+                        ->with('error', 'category not found.');*/
+
+        } catch (\Exception $e) {
+            Log::error('Error updating category: ' . $e->getMessage());
+            // exit;
+            return redirect()->back()
+                        ->with('error', 'Failed to update category. Please try again.');
+        }
+            //exit;
+            // redirect
+          
+                            
         ///////////////////
        /* echo "<pre>";
         print_r($request->all());

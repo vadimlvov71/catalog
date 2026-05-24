@@ -46,4 +46,10 @@ class ErrorsHandlingController extends Controller
             'locale' => $locale,
         ]);
     }
+    public function notFound($locale)
+    {
+        app()->setLocale($locale); // Устанавливаем локаль для перевода
+        // Возвращаем представление с переводами
+        return response()->view('errors.404', [], 404);
+    }
 }

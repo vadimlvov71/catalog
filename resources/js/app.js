@@ -1,17 +1,7 @@
-//import './bootstrap';
-/*
-require('./bootstrap');
+import "./bootstrap";
+import { createApp } from "vue";
+import router from "./router/router";
 
-import { createApp } from 'vue';
-import ExampleComponent from './components/ExampleComponent.vue';
+import App from "./App.vue";
 
-const app = createApp({});
-
-app.component('example-component', ExampleComponent);
-
-app.mount('#app');*/
-console.log("aaaaa");
-/*
-import { createApp } from 'vue';
-import App from './App.vue';
-createApp(App).mount("#app");*/
+createApp(App).use(router).mount("#app");

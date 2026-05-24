@@ -41,6 +41,10 @@ class CategoryController extends Controller
             $locale = Config::get('app.locale');
         }
         $category = Category::where('url', $category_url)->first();
+        if (!$category) {
+            abort(404);  // вызовет страницу 404, которая будет обрабатываться по вашему кастомному примеру
+        }
+
         $category_id = $category->id;
         $catLocale = $category->getLocalNameOne($locale, $category_id)->first();
         $items = $this->itemRepository->getCategoryItems($category_id);
@@ -58,7 +62,7 @@ class CategoryController extends Controller
         echo "_________</pre>";
         exit;
         */
-        echo "CAT::".$category_url."<br>";
+       // echo "CAT::".$category_url."<br>";
        
         $pageTitle = $catLocale->name;
         $sideBarData = [];

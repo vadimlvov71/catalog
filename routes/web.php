@@ -8,6 +8,7 @@ use App\Http\Controllers\Public\ItemController;
 use App\Http\Controllers\Public\CategoryController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminItemsController;
+use App\Http\Controllers\Admin\API\AdminJSONItemsController;
 use App\Http\Controllers\Admin\AdminCategoriesController;
 use App\Http\Controllers\Admin\AdminLocaleController;
 use App\Http\Controllers\Admin\CategoriesLocalizationController;
@@ -58,6 +59,7 @@ Route::middleware(['check.auth'])->group(function () {
     Route::get('/manager_secret', [AdminController::class, 'locale'])->name('admin.locale');
     Route::get('/manager_secret/{locale}', [AdminController::class, 'index'])->name('admin.index');
     Route::get('/manager_secret/{locale}/items', [AdminItemsController::class, 'index'])->name('admin.item.index');
+    //Route::get('/manager_secret/{locale}/json/items', [AdminJSONItemsController::class, 'getItems'])->name('admin.json.item.index');
     Route::match(['get', 'post'], '/manager_secret/{locale}/item/create', [AdminItemsController::class, 'create'])->name('admin.item.create');
     Route::post('/manager_secret/{locale}/item/store', [AdminItemsController::class, 'store'])->name('item.store');
     Route::post('/manager_secret/{locale}/item/update/{id}', [AdminItemsController::class, 'update'])->name('admin.item.update');
@@ -74,7 +76,9 @@ Route::middleware(['check.auth'])->group(function () {
     Route::post('/manager_secret//{locale}/categories/update/{id}', [AdminCategoriesController::class, 'update'])->name('admin.category.update');
     Route::post('/manager_secret/{locale}/categories/update-status', [AdminCategoriesController::class, 'updateStatus'])
     ->name('category.updateStatus');
-    
+    Route::post('/manager_secret/{locale}/categories/update-index-status', [AdminCategoriesController::class, 'updateIndexStatus'])
+    ->name('category.updateIndexStatus');
+
     Route::get('/manager_secret/{locale}/categories/name_locale/create/{catagoryId}', [CategoriesLocalizationController::class, 'create'])->name('admin.category.locale.create');
     Route::post('/manager_secret/{locale}/category/name_locale/store/{catagoryId}', [CategoriesLocalizationController::class, 'store'])->name('admin.category.locale.store');
     Route::get('/manager_secret/{locale}/categories/name_locale/edit/{id}', [CategoriesLocalizationController::class, 'edit'])->name('admin.category.locale.edit');
@@ -86,6 +90,9 @@ Route::middleware(['check.auth'])->group(function () {
     Route::get('/manager_secret/locale/{locale}', [AdminLocaleController::class, 'set'])->name('admin.language.set');
     #Route::match(['get', 'post'], '/manager_secret/language/create', [AdminLanguagesController::class, 'create'])->name('admin.language.create');
     #Route::post('/manager_secret/language/store', [AdminLanguagesController::class, 'store'])->name('admin.language.store');
+    /*Route::get('/{vue_capture?}', function () {
+        return view('welcome');
+    })->where('vue_capture', '[\/\w\.-]*');*/
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
     /*Route::group(['middleware' => ['cors']], function () {

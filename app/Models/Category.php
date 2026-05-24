@@ -17,6 +17,7 @@ class Category extends Model
         'name',
         'description',
         'status',
+        'status_index_page_show',
         'url', 
         'image'
     ];

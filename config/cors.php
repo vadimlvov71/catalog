@@ -19,10 +19,12 @@ return [
 
     'allowed_methods' => ['*'],
 
+    'allowed_origins' => ['http://127.0.0.1', 'http://localhost:83', 'http://localhost:5175'],
     //'allowed_origins' => ['*'],
-    'allowed_origins' => ['http://127.0.0.1:5174'],
+    
 
-    'allowed_origins_patterns' => [],
+    //'allowed_origins_patterns' => [],
+    //'allowed_origins_patterns' => ['http://localhost:3000'], // укажите домен вашего фронтенда
 
     'allowed_headers' => ['*'],
 
@@ -30,6 +32,6 @@ return [
 
     'max_age' => 0,
 
-    '//supports_credentials' => false,
+    //supports_credentials' => false,
     'supports_credentials' => true,
 ];

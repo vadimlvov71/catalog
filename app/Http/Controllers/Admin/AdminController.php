@@ -21,7 +21,7 @@ class AdminController extends Controller
     
     public function index($locale)
     {
-        echo "locale: ".$locale."<br>";
+        //echo "locale: ".$locale."<br>";
         $categories = Category::where('status', 'active')->get();
         if($locale == null){
             $locale = Config::get('app.locale');
@@ -33,7 +33,7 @@ class AdminController extends Controller
         $pageTitle = "Index";
         $sideBarData = [];
         $sideBarData['title'] = $pageTitle;
-        return view('admin.index', compact(['items', 'sideBarData', 'categories', 'locale', 'locales']));
+        return view('admin.indexVue', compact(['items', 'sideBarData', 'categories', 'locale', 'locales']));
     }
     public function locale()
     {

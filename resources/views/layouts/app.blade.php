@@ -6,15 +6,14 @@
     <title>@yield('title', 'Default Title')</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}?v={{ time() }}">
+    <script src="{{ asset('js/lazyload.js') }}" defer></script>
     @stack('styles')
 </head>
 <body>
     <!-- Header Component -->
     @include('components.header')
     
-    <nav>
-        {{-- Navigation --}}
-    </nav>
+    
     <!-- Show only for authenticated users -->
     @auth   
         @section('sidebar')
@@ -23,12 +22,15 @@
             <p></p>
         @endsection
     @endauth
-
-    <main>
+    <nav>
+        {{-- Navigation --}}
+        @include('layouts.include.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
+    </nav>
+    <main>content
         @yield('content')
     </main>
 
-    <footer>
+    <footer>Footer
         {{-- Footer --}}
     </footer>
 

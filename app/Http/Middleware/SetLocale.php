@@ -19,7 +19,7 @@ class SetLocale
         echo ":::::2".$lang."<br>";
         if(strlen($lang) === 2 && in_array($lang, config('languages'))){
             echo "aaaaa";
-            exit;
+            //exit;
         }else{
             echo "nooooooooo";
             exit;

@@ -3,7 +3,9 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
+use App\Http\Controllers\Error\ErrorsHandlingController;
 
 class Handler extends ExceptionHandler
 {
@@ -27,4 +29,19 @@ class Handler extends ExceptionHandler
             //
         });
     }
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof NotFoundHttpException) {
+            $locale = $request->segment(1); // получаем язык из первого сегмента URL, например 'en' или 'ru'
+            // Можно проверить, что $locale действительно поддерживается
+            $supportedLocales = ['en', 'ru']; // список поддерживаемых языков
+            if (!in_array($locale, $supportedLocales)) {
+                $locale = config('app.locale'); // язык по умолчанию
+            }
+            // Теперь вызываем контроллер, передавая язык
+            return app()->call('App\Http\Controllers\Error\ErrorsHandlingController@notFound', ['locale' => $locale]);
+        }
+        return parent::render($request, $exception);
+    }
+
 }
