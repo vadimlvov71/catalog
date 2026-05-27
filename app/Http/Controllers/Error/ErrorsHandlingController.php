@@ -38,8 +38,14 @@ class ErrorsHandlingController extends Controller
         $sideBarData['title']='First';
         $categories = [];
         $locale = "";
+         $breadcrumbs = [
+            ['title' => 'Home', 'url' => route('home', $locale)],
+           // ['title' => 'Category', 'url' => route('category', $locale)],
+            ['title' => $pageTitle, 'url' => '']
+        ];
         return view('errors.wrong.locale', [
             'pageTitle' => $pageTitle,
+            'breadcrumbs' => $breadcrumbs, 
             'items' => $items,
             'sideBarData' => $sideBarData,
             'categories' => $categories,

@@ -3,7 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\API\AdminJSONItemsController;
+use App\Http\Controllers\Admin\API\AdminJSONCategoriesController;
 use App\Http\Controllers\Admin\API\UserController;
+use App\Http\Controllers\Admin\API\TranslationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,8 +29,10 @@ Route::middleware('auth:sanctum')->get('/manager_secret/{locale}/json/items', [A
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/manager_secret/{locale}/json/items', [AdminJSONItemsController::class, 'getItems'])->name('admin.json.item.index');
+    Route::get('/manager_secret/{locale}/json/categories', [AdminJSONCategoriesController::class, 'getItems'])->name('admin.json.categories.index');
     // Другие защищённые маршруты здесь
 });
+Route::get('/manager_secret/translations/{locale}', [TranslationController::class, 'getTranslations']);
 //Route::middleware(['check.auth'])->group(function () {
   //  Route::get('/manager_secret/{locale}/json/items', [AdminJSONItemsController::class, 'getItems'])->name('admin.json.item.index');
 

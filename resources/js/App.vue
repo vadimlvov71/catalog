@@ -12,17 +12,31 @@
       </nav>
     </aside>
     <main class="main-content">
+      <Header />
       <RouterView />
     </main>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import en from '@lang/en.json'
+import ru from '@lang/ru.json'
+import { ref, onMounted } from 'vue'
 import Sidebar from './components/Sidebar.vue'
+import Header from './components/Header.vue'
 
+const messages = {
+  en,
+  ru
+}
 const isCollapsed = ref(false)
+//const locale = ref(window.appData?.locale || 'en')
+
+onMounted(() => {
+  //console.log('Текущая локаль:', locale.value)
+})
 </script>
+
 
 <style scoped>
 .layout {

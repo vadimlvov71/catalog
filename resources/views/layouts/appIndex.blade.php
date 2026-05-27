@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Default Title')</title>
-    @include('components.styles')
+     @include('components.styles')
     @stack('styles')
 </head>
 <body>
@@ -13,17 +13,7 @@
     
     <div class="container-fluid">
         <div class="row">
-            <nav class="col-md-3 sidebar bg-light pt-3">
-                @include('components.sidebarMenu', ['sideBarData' => $sideBarData, 'categories' => $categories, 'locale' => $locale])
-                <p></p>
-         
-            </nav>
-
-            <main class="col-md-9 pt-3">content
-                <nav>
-                {{-- Navigation --}}
-                    @include('layouts.include.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
-                </nav>
+            <main class="col-md-12 pt-3">content
                 @yield('content')
             </main>
         </div>

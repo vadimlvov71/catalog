@@ -1,9 +1,13 @@
 <template>
   <div class="sidebar">
-    <router-link :to="{ name: 'Home', params: { locale: locale } }" active-class="active">Home</router-link>
-    <router-link :to="{ name: 'Items', params: { locale: locale } }" active-class="active">Items</router-link>
-    <router-link to="/categories" active-class="active">Categories</router-link>
+    <router-link :to="{ name: 'Home', params: { interfaceLocale: interfaceLocale } }" active-class="active">{{ $t('menu.home') }}</router-link>
+    <router-link :to="{ name: 'Items', params: { interfaceLocale: interfaceLocale } }" active-class="active">{{ $t('menu.items') }}</router-link>
+    <router-link :to="{ name: 'Categories', params: { interfaceLocale: interfaceLocale } }" active-class="active">{{ $t('menu.categories') }}</router-link>
     <router-link to="/settings" active-class="active">Settings</router-link>
+    <select @change="changeLang($event.target.value)">
+      <option value="en">English</option>
+      <option value="ru">Русский</option>
+    </select>
     <button class="list-group-item list-group-item-action bg-dark text-white" @click="logout">
       <i class="fas fa-sign-out-alt mr-2"></i> Logout
     </button>
@@ -12,13 +16,29 @@
 
 
 
-<script>
-import axios from 'axios';
 
+
+
+<script setup>
+import axios from 'axios';
+import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n'
+
+const route = useRoute();
+const interfaceLocale = route.params.interfaceLocale || 'ru';
+
+console.log('Текущая локаль в компоненте:', interfaceLocale);
+
+const { locale } = useI18n()
+function changeLang(lang) {
+  console.log('changeLang', lang);
+  locale.value = lang  // переключение языка
+}
+/*
 export default {
   data() {
     return {
-      locale: 'en'
+      interfaceLocale: 'en'
     }
   },
   methods: {
@@ -37,6 +57,7 @@ export default {
     }
   }
 }
+  */
 </script>
 
 <style scoped>

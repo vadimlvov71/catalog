@@ -1,0 +1,17 @@
+{
+    "welcome": "Доброго дня",
+    "menu.home": "Головна",
+    "menu.items": "Товари",
+    "menu.categories": "Категорії",
+    "menu.settings": "Налаштування",
+    "menu.logout": "Вийти",
+    "categories.title": "Категорії",
+    "categories.create_category": "Створити категорію",
+    "categories.create_category_locale": "Створити локалізацію категорії",
+    "categories.edit_category": "Редагувати категорію",
+    "categories.edit_category_locale": "Редагувати локалізовану категорію",
+    "categories.make_visible_on_frontpage": "Зробити видимою на першій сторінці",
+    "categories.add_photo": "Додати фото",
+    "categories.description": "Опис",
+    "categories.meta_description": "Опис для meta"
+}

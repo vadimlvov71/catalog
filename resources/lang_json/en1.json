@@ -1,0 +1,11 @@
+{
+    "categories.title": "Categories",
+    "categories.create_category": "Create Category",
+    "categories.create_category_locale": "Create Category Locale",
+    "categories.edit_category": "Edit Category",
+    "categories.edit_category_locale": "Edit Category Locale",
+    "categories.make_visible_on_frontpage": "Make Visible on Front Page",
+    "categories.add_photo": "Add Photo",
+    "categories.description": "Description",
+    "categories.meta_description": "Meta Description"
+}

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.appIndex')
 
 @section('title', 'Page Title')
 
@@ -28,10 +28,10 @@
                             <a href="{{ route('category', ['locale' => $locale, 'category' => $category->url]) }}">
                                {{-- {{ $category->name}}  --}} 
                                 {{ $category->getLocalName($locale)}}
-                                <img src="{{ Storage::url('uploads/' . $category->image) }}" 
+                                <img data-src="{{ asset(Storage::url('uploads/' . $category->image)) }}" 
                                 alt="{{ $category->name }}"
-                                class="img-fluid"
-                                style="max-height: 400px; object-fit: cover;">
+                                class="lazy"
+                                style="">
                             </a>
                             </div>
                     
@@ -69,6 +69,6 @@
     </main>
 </div>
 
-        
+        img
 
 @endsection

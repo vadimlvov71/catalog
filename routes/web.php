@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\StaticPagesController;
 use App\Http\Controllers\Local\ChangeLanguageController;
 use App\Http\Controllers\Error\ErrorsHandlingController;
+use App\Http\Controllers\Error\ErrorsPageController;
 
 use App\Http\Middleware\Localization;
 use App\Http\Middleware\SetLocal;
@@ -115,6 +116,7 @@ Route::get('/{locale?}', function ($locale = null) {
 Route::get('locale/{locale}', [ChangeLanguageController::class, 'index'])->name('set-locale');
 Route::get('/', [ChangeLanguageController::class, 'forcely'])->name('set-forcely-locale');
 Route::get('/errors/wrong_locale', [ErrorsHandlingController::class, 'index'])->name('wrong-locale');
+Route::get('/errors/no-permission-page/{locale}', [ErrorsPageController::class, 'noPermissionPage'])->name('no-permission-page');
 ///////////
 //Route::prefix('{locale?}')->middleware('Localization')->group(function() {
 //Route::group(['middleware' => ['check-locale' => ['except' => 'admin.index']], 'prefix' => '{locale?}'], function($locale) {

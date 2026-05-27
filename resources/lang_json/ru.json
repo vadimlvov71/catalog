@@ -1,0 +1,20 @@
+{
+    "welcome": "Здравствуйте",
+    "menu.home": "Главная",
+    "menu.items": "Товары",
+    "menu.categories": "Категории",
+    "menu.settings": "Настройки",
+    "menu.logout": "Выйти",
+    "categories.title": "Категории",
+    "categories.create_category": "Создать категорию",
+    "categories.create_category_locale": "Создать локализацию категории",
+    "categories.edit_category": "Редактировать категорию",
+    "categories.edit_category_locale": "Редактировать локализованную категорию",
+    "categories.make_visible_on_frontpage": "Сделать видимой на первой странице",
+    "categories.add_photo": "Добавить фото",
+    "categories.description": "Описание",
+    "categories.meta_description": "Описание для meta",
+    "items.title": "Товары",
+    "items.create_item": "Создать товар",
+    "items.create_item_locale": "Создать локализацию товара"
+}

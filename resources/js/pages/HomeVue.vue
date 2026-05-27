@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>Привет, {{ user?.name || 'гость' }}!</h1>
+    <h1>{{ $t('welcome') }}, {{ user?.name || 'гость' }}!</h1>
+    {{ $t('categories.title') }}
   </div>
 </template>
 <script>

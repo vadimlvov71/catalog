@@ -5,26 +5,21 @@
 @section('title', $pageTitle)
 @section('content')
 
-    <div class="container-fluid">
-    <div class="row">
-    <!-- Левая колонка: меню -->
-        <nav class="col-md-3 sidebar bg-light pt-3">
-        @include('components.sidebarMenu', [
-            'sideBarData' => $sideBarData, 
-            'categories' => $categories, 
-            'locale' => $locale
-        ])
-        </nav>
+
 
         <!-- Основной контент -->
-        <main class="col-md-9 pt-3">
-        <!-- Первый блок: фото и описание категории -->
-        <div class="mb-4">
-            <img src="https://via.placeholder.com/800x300?text=Фото+категории" alt="Фото категории" class="category-photo mb-3" />
-            <h2>Название категории</h2>
-            <p>Здесь краткое описание категории товаров. Можно написать интересные детали, преимущества или информацию, полезную покупателям.</p>
-        </div>
+        <div class="col-md-9 pt-3">
 
+            <!-- Первый блок: фото и описание категории -->
+            <div class="mb-4">
+                <img data-src="{{ asset(Storage::url('uploads/' . $category->image)) }}" 
+                                alt="{{ $category->name }}"
+                                class="lazy"
+                                style="">
+                <h2>{{ $pageTitle }}</h2>
+                <p>Здесь краткое описание категории товаров. Можно написать интересные детали, преимущества или информацию, полезную покупателям.</p>
+            </div>
+        </div>
         <!-- Второй блок: карточки товаров -->
         <div>
             <div class="row">
@@ -118,8 +113,7 @@
             </div>
         </div>
 
-        </main>
-    </div>
-    </div>
+
+
 
 @endsection
