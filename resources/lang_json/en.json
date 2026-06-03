@@ -13,5 +13,8 @@
     "categories.make_visible_on_frontpage": "Make Visible on Front Page",
     "categories.add_photo": "Add Photo",
     "categories.description": "Description",
-    "categories.meta_description": "Meta Description"
+    "categories.meta_description": "Meta Description",
+    "form.title": "Name",
+    "form.submit": "Submit",
+    "form.cancel": "Cancel"
 }

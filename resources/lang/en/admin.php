@@ -1,6 +1,7 @@
 <?php
 return [
     'welcome' => 'Welcome',
+    
     'menu' => [
         'home' => 'Home',
         'items' => 'Items',
@@ -18,5 +19,10 @@ return [
         'add_photo' => 'Add Photo',
         'description' => 'Description',
         'meta_description' => 'Meta Description',
+    ],
+    'form' => [
+        'title' => 'Name',
+        'submit' => 'Submit',
+        'cancel' => 'Cancel',
     ],
 ];

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('name')->charset('utf8mb4')->collation('utf8mb4_unicode_ci');
             $table->text('description')->charset('utf8mb4')->collation('utf8mb4_unicode_ci');
+            $table->text('content')->charset('utf8mb4')->collation('utf8mb4_unicode_ci');
             $table->foreignId('item_id');
             $table->string('lang', 6)->nullable(); 
             $table->timestamps();

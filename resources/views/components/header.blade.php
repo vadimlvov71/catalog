@@ -1,4 +1,4 @@
-<header class="bg-light">
+<header class="bg-light shadow-sm rounded">
   <nav class="navbar navbar-expand-lg navbar-light container">
     <!-- Логотип -->
     <a class="navbar-brand" href="#">

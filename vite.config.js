@@ -2,6 +2,8 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
+import vuetify from 'vite-plugin-vuetify'
+// ... other imports
 /*
 export default defineConfig({
     server: {
@@ -29,6 +31,7 @@ export default defineConfig({
       refresh: true,
     }),
      vue(),
+     vuetify({ autoImport: true }),
   ],
   resolve: {
     alias: {

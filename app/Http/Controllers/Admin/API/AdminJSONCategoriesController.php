@@ -31,11 +31,29 @@ class AdminJSONCategoriesController extends Controller
 
     public function getItems($locale)
     {
-        $items = Item::orderBy('id', 'desc')->get();
+        $items = Category::orderBy('id', 'desc')->get();
         return response()->json([
             'status' => 'success',
             'message' => 'Привет из Laravel!',
             'items' => $items
         ]);
+    }
+    public function validateField(Request $request)
+    {
+        $field = $request->query('field');
+        $value = $request->query('value');
+        $exists = Category::where($field, $value)->exists();
+        return response()->json(['unique' => !$exists]);
+        ///return response()->json(['field' => $field, 'value' => $value]);
+    }
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|unique:categories,name',
+            'url' => 'required|unique:categories,url',
+        ]);
+        
+        Category::create($data);
+        return response()->json(['success' => true]);
     }
 }

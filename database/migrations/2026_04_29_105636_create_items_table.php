@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->bigIncrements('id');;
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            //$table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('category_id');
             $table->string('name');
             $table->text('description');
             $table->string('price');
             $table->string('image')->nullable();
             $table->string('url');
-            $table->string('status', 12);
-            $table->string('status_index_page_show', 12)->nullable();
-            $table->string('status_index_page_action', 12)->nullable();
+            $table->string('status', 12)->default('hidden'); 
+            $table->string('status_index_page_show', 12)->default('hidden');
+            $table->string('status_index_page_action', 12)->default('hidden'); 
             $table->timestamps();
         });
     }

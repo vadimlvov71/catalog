@@ -1,15 +1,15 @@
 <template>
   <div>
-    <button @click="showModal = true">Добавить запись</button>
+    <button @click="showModal = true">{{ $t('categories.create_category') }}</button>
 
     <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
       <div class="modal-window">
-        <h3>Добавить новую запись</h3>
+        <h3>{{ $t('categories.create_category') }}</h3>
         <form @submit.prevent="submitForm">
           <div>
-            <label>Title:</label>
-            <input v-model="form.title" @blur="checkUnique('title')" />
-            <div v-if="errors.title" style="color:red">{{ errors.title }}</div>
+            <label>{{ $t('form.title') }}:</label>
+            <input v-model="form.name" @blur="checkUnique('name')" />
+            <div v-if="errors.name" style="color:red">{{ errors.name }}</div>
           </div>
 
           <div>
@@ -17,9 +17,13 @@
             <input v-model="form.url" @blur="checkUnique('url')" />
             <div v-if="errors.url" style="color:red">{{ errors.url }}</div>
           </div>
-
-          <button type="submit" :disabled="loading || hasErrors">Сохранить</button>
-          <button type="button" @click="closeModal">Отмена</button>
+          <div>
+            <label>Status:</label>
+            <input v-model="form.status" @blur="checkUnique('status')" />
+            <div v-if="errors.status" style="color:red">{{ errors.status }}</div>
+          </div>
+          <button type="submit" :disabled="loading || hasErrors">{{ $t('form.submit') }}</button>
+          <button type="button" @click="closeModal">{{ $t('form.cancel') }}</button>
 
           <div v-if="loading">Проверка...</div>
         </form>
@@ -36,7 +40,8 @@ export default {
       loading: false,
       form: {
         title: '',
-        url: ''
+        url: '',
+        status: 'hidden'
       },
       errors: {}
     };
@@ -55,18 +60,23 @@ export default {
       this.loading = false;
     },
     checkUnique(field) {
+   
+        console.log(field);
       if (!this.form[field]) {
         this.errors[field] = `${field} не может быть пустым.`;
         return;
       }
       this.loading = true;
-      fetch(`/api/check-unique?field=${field}&value=` + encodeURIComponent(this.form[field]))
+      fetch("/api/manager_secret/check-unique?field=" + field + "&value=" + encodeURIComponent(this.form[field]))
         .then(response => response.json())
         .then(data => {
           this.loading = false;
-          if (data.exists) {
+          console.log(data);
+          if (!data.unique) {
+            console.log('data.no unique' + data.unique);
             this.errors[field] = `${field} уже существует.`;
           } else {
+            console.log('yes' + data.unique);
             delete this.errors[field];
           }
         }).catch(() => {
@@ -75,12 +85,41 @@ export default {
         });
     },
     submitForm() {
-      if (this.hasErrors) return;
-
-      // Отправка формы на сервер, например, через axios или fetch
-      alert(`Отправлено: title="${this.form.title}", url="${this.form.url}"`);
-      this.closeModal();
-    }
+      this.isSubmitting = true;
+      this.errors = {};
+      console.log('this.form');
+      console.log(this.form);
+      // Проверяем поля еще раз перед отправкой
+      Promise.all([this.checkUnique('name'), this.checkUnique('url')]).then(() => {
+        
+        if (Object.keys(this.errors).length > 0) {
+          this.isSubmitting = false;
+          return;
+        }
+        fetch('/api/manager_secret/save-category', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+          },
+          body: JSON.stringify(this.form),
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              this.closeModal();
+              alert('Запись успешно сохранена');
+            } else {
+              this.errors = data.errors || {};
+            }
+            this.isSubmitting = false;
+          })
+          .catch(() => {
+            alert('Ошибка при сохранении');
+            this.isSubmitting = false;
+          });
+      });
+    },
   }
 };
 </script>

@@ -23,8 +23,8 @@
                
                 {{--   @foreach ($category->getLocalName($locale) as $object) --}}
                 <div class='col-sm-4 category-row' >
-                    <div class="card category-block">
-                        <div class="card-body">
+                    <div class="card category-block shadow-sm p-3 mb-5 bg-white rounded">
+                        <div class="card-body ">
                             <a href="{{ route('category', ['locale' => $locale, 'category' => $category->url]) }}">
                                {{-- {{ $category->name}}  --}} 
                                 {{ $category->getLocalName($locale)}}

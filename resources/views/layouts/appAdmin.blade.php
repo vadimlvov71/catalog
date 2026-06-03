@@ -6,6 +6,7 @@
     <title>@yield('title', 'Default Title')</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}?v={{ time() }}">
+      <link rel="stylesheet" href="{{ asset('css/admin.css') }}?v={{ time() }}">
     <script src="{{ asset('js/lazyload.js') }}" defer></script>
     @stack('styles')
 </head>

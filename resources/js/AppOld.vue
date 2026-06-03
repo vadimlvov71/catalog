@@ -1,32 +1,21 @@
 <template>
-  
-    
-  <v-layout class="rounded rounded-md border">
-    <v-app-bar title="Application bar"><Header /></v-app-bar>
-
-    <v-navigation-drawer>
-      <v-list nav>
-        <v-list-item title="Navigation drawer" link>
+  <div class="layout">
+    <aside :class="['sidebar', { collapsed: isCollapsed }]">
+      <div class="sidebar-header">
+        <h2>MyApp</h2>
+        <button @click="isCollapsed = !isCollapsed" class="toggle-btn">
+          ☰
+        </button>
+      </div>
+      <nav class="sidebar-nav">
           <Sidebar />
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-
-    <v-main class="d-flex align-center justify-center" height="300">
-      <v-container>
-        <v-sheet
-        
-          color="surface-light"
-          height="100"
-          margin-top="200"
-          rounded="lg"
-          width="100%"
-        > 
-        <RouterView />
-      </v-sheet>
-      </v-container>
-    </v-main>
-  </v-layout>
+      </nav>
+    </aside>
+    <main class="main-content">
+      <Header />
+      <RouterView />
+    </main>
+  </div>
 </template>
 
 <script setup>

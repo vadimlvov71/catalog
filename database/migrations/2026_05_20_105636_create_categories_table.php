@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('status');
-            $table->string('status_index_page_show', 12)->nullable();
-            $table->string('status_index_page_avatar_show', 12)->nullable();
+            $table->string('status')->default('hidden'); 
+            $table->string('status_index_page_show', 12)->default('hidden'); 
+            $table->string('status_index_page_avatar_show', 12)->default('hidden'); 
             $table->string('name');
-            $table->text('description');
-            $table->string('image');
+            $table->text('description')->nullable();
+            $table->string('image')->nullable();
             $table->string('url');
             $table->timestamps();
         });
