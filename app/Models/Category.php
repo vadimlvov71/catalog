@@ -19,7 +19,8 @@ class Category extends Model
         'status',
         'status_index_page_show',
         'url', 
-        'image'
+        'image',
+        'preview'
     ];
     /**
      * @return [type]

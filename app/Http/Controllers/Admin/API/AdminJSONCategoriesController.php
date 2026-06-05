@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use App\Http\Requests\UpdateItemRequest;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 use Session;
 
@@ -32,6 +33,18 @@ class AdminJSONCategoriesController extends Controller
     public function getItems($locale)
     {
         $items = Category::orderBy('id', 'desc')->get();
+        foreach ($items as &$item) {
+            if(!empty($item->image)){
+                $item->image_url = Storage::url('uploads/' . $item->image);
+            }else{
+                $item->image_url = "";
+            }
+            if(!empty($item->preview)){
+                $item->preview_url = Storage::url('uploads/' . $item->preview);
+            }else{
+                $item->preview_url = "";
+            }
+        }
         return response()->json([
             'status' => 'success',
             'message' => 'Привет из Laravel!',

@@ -34,12 +34,11 @@
           <!-- Таблица с изображениями -->
 
 
-
               <template v-slot:item.image="{ item }">
                 <v-card class="my-2" elevation="1" rounded>
-                  <template v-if="item.image">
+                  <template v-if="item.image_url">
                     <v-img
-                      :src="`https://cdn.vuetifyjs.com/docs/images/graphics/gpus/${item.image}`"
+                      :src="`${item.image_url}`"
                       height="64"
                       cover
                     ></v-img>
@@ -47,7 +46,7 @@
                   <template v-else>
                     <v-btn
                       icon
-                      @click="openImageUpload(item)"
+                      @click="openImageUploadDialog(item)"
                       height="64"
                       class="d-flex align-center justify-center"
                     >
@@ -57,7 +56,18 @@
                 </v-card>
               </template>
        
-           
+           <template v-slot:item.preview="{ item }">
+                <v-card class="my-2" elevation="1" rounded>
+                  <template v-if="item.preview_url">
+                    <v-img
+                      :src="`${item.preview_url}`"
+                      height="64"
+                      cover
+                    ></v-img>
+                  </template>
+                  
+                </v-card>
+            </template>
         
          <template v-slot:item.status_index_page_show ="{ item }">
             <div class="text-end">
@@ -114,18 +124,22 @@
     </div>
   </div>
   <ImageDialogUpload ref="ImageDialogUpload" />
+  <ImageCropDialogUpload ref="ImageCropDialogUpload" v-model:dialog="dialogVisible" />
 </template>
 <script>
 //import AddCategoryForm from '../../components/forms/AddCategoryForm.vue'
 import AddCategoryDialog from '../../components/forms/AddCategoryDialog.vue'
 import ImageDialogUpload from '../../components/dialog/ImageDialogUpload.vue'
+import ImageCropDialogUpload from '../../components/dialog/ImageCropDialogUpload.vue'
 
 export default {
   
   data() {
     return {
+      
       items: [],  // сюда подгрузятся данные
       dialog: false,
+      dialogVisible: false,
       selectedFile: null,
       currentItem: null, // элемент, куда загружаем картинку
     };
@@ -133,7 +147,8 @@ export default {
 
   components: {
     AddCategoryDialog,
-    ImageDialogUpload
+    ImageDialogUpload,
+    ImageCropDialogUpload
   },
   mounted() {
     this.loadItems();
@@ -160,9 +175,10 @@ export default {
       handleClick() {
           this.$router.push('/items/create'); // путь маршрута Vue Router
       },
-      openImageUpload(item) {
+      openImageUploadDialog(item) {
       // Вызываем метод дочернего компонента по ref
-        this.$refs.ImageDialogUpload.openImageUpload(item);
+        this.$refs.ImageCropDialogUpload.openDialog(item.id, 'category');
+        //this.$refs.ImageDialogUpload.openImageUpload(item, 'category');
       },
     }
 };

@@ -28,7 +28,7 @@
                             <a href="{{ route('category', ['locale' => $locale, 'category' => $category->url]) }}">
                                {{-- {{ $category->name}}  --}} 
                                 {{ $category->getLocalName($locale)}}
-                                <img data-src="{{ asset(Storage::url('uploads/' . $category->image)) }}" 
+                                <img data-src="{{ asset(Storage::url('uploads/' . $category->preview)) }}" 
                                 alt="{{ $category->name }}"
                                 class="lazy"
                                 style="">

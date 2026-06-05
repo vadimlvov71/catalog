@@ -18,11 +18,13 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->string('price');
-            $table->string('image')->nullable();
             $table->string('url');
+            $table->string('image')->nullable();
+            $table->string('preview')->nullable();
             $table->string('status', 12)->default('hidden'); 
             $table->string('status_index_page_show', 12)->default('hidden');
             $table->string('status_index_page_action', 12)->default('hidden'); 
+            $table->foreignId('additional_id');
             $table->timestamps();
         });
     }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\API\AdminJSONItemsController;
 use App\Http\Controllers\Admin\API\AdminJSONCategoriesController;
 use App\Http\Controllers\Admin\API\UserController;
 use App\Http\Controllers\Admin\API\TranslationController;
+use App\Http\Controllers\Admin\API\ImageController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -33,6 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/manager_secret/check-unique', [AdminJSONCategoriesController::class, 'validateField']);
     // Другие защищённые маршруты здесь
     Route::post('/manager_secret/save-category', [AdminJSONCategoriesController::class, 'store']);
+    Route::post('/manager_secret/image/upload', [ImageController::class, 'store']);
 });
 Route::get('/manager_secret/translations/{locale}', [TranslationController::class, 'getTranslations']);
 //Route::middleware(['check.auth'])->group(function () {
