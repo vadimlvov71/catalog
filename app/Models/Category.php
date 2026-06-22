@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Item;
 use App\Models\CategoriesLocalization;
+use App\Traits\HasCommonCasts;
 
 class Category extends Model
 {
     use HasFactory;
-
+    use HasCommonCasts;
+    
     protected $table = 'categories';
 
     protected $fillable = [

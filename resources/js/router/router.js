@@ -3,28 +3,34 @@ import HomeView from "../pages/HomeVue.vue"
 import ItemsView from '../pages/items/ItemsView.vue'
 import ItemsCreateView from '../pages/items/ItemsCreateView.vue'
 import CategoriesView from '../pages/categories/CategoriesView.vue'
+import CategoryView from '../pages/categories/CategoryView.vue'
 
 
 // импорт других компонентов
 
 const routes = [
   {
-    path: '/manager_secret/:interfaceLocale',
+    path: '/:interfaceLocale',
     name: 'Home',
     component: HomeView
   },
   {
-    path: '/manager_secret/:interfaceLocale/items',
+    path: '/:interfaceLocale/items',
     name: 'Items',
     component: ItemsView
   },
   {
-    path: '/manager_secret/:interfaceLocale/categories',
+    path: '/:interfaceLocale/categories',
     name: 'Categories',
     component: CategoriesView
   },
   {
-    path: '/manager_secret/:interfaceLocale/settings',
+    path: '/:interfaceLocale/category/:id',
+    name: 'CategoryView',
+    component: CategoryView
+  },
+  {
+    path: '/:interfaceLocale/settings',
     name: 'Settings',
     component: ItemsView
   },
@@ -32,7 +38,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/spa'),
   routes,
 })
 

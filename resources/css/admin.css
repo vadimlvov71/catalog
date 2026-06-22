@@ -48,3 +48,8 @@ select:focus {
   border-color: #409eff;
   box-shadow: 0 0 5px rgba(64, 158, 255, 0.6);
 }
+.image-container {
+  width: 300px;
+  height: 300px;
+  position: relative;
+}

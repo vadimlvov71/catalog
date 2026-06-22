@@ -40,7 +40,10 @@ Route::get('/test-locale', function () {
         'exists' => Lang::has('admin.categories'),
     ];
 });*/
-Route::group(['middleware' => ['guest']], function() {
+
+//Route::group(['middleware' => ['guest']], function() {
+Route::middleware(['web', 'guest'])->group(function() {    
+
     /**
      * Register Routes
      */
@@ -86,7 +89,9 @@ Route::middleware(['check.auth'])->group(function () {
     Route::post('/manager_secret/{locale}/categories/name_locale/update/{id}', [CategoriesLocalizationController::class, 'update'])->name('admin.category.locale.update');
     
     Route::post('/manager_secret/image/upload/{type}/{id}', [ImageController::class, 'store'])->name('admin.image.store');
-
+    
+    Route::get('/spa/{locale}', [AdminController::class, 'index'])->name('spa.index');
+     Route::get('/spa/{locale}/{page?}/{id?}', [AdminController::class, 'index'])->name('spa.index');
     
     Route::get('/manager_secret/locale/{locale}', [AdminLocaleController::class, 'set'])->name('admin.language.set');
     #Route::match(['get', 'post'], '/manager_secret/language/create', [AdminLanguagesController::class, 'create'])->name('admin.language.create');

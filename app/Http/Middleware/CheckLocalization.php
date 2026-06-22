@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Session;
 
 class CheckLocalization 
 {
-    protected $except = ['manager_secret'];
+    protected $except = ['manager_secret', 'spa'];
    // protected $except = ['admin.index/*'];
 
     public function handle(Request $request, Closure $next)

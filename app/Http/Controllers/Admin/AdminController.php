@@ -40,7 +40,8 @@ class AdminController extends Controller
        // if($locale == null){
             $locale = Config::get('app.locale');
        // }
-        return redirect()->route('admin.index', $locale);
+        //return redirect()->route('admin.index', $locale);
+        return redirect()->route('spa.index', $locale);
     }
     
 }

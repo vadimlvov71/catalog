@@ -35,6 +35,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Другие защищённые маршруты здесь
     Route::post('/manager_secret/save-category', [AdminJSONCategoriesController::class, 'store']);
     Route::post('/manager_secret/image/upload', [ImageController::class, 'store']);
+    Route::get('/manager_secret/{locale}/categories/edit/{id}', [AdminJSONCategoriesController::class, 'edit']);
+    Route::post('/manager_secret/{locale}/categories/update/{id}', [AdminJSONCategoriesController::class, 'update']);
 });
 Route::get('/manager_secret/translations/{locale}', [TranslationController::class, 'getTranslations']);
 //Route::middleware(['check.auth'])->group(function () {

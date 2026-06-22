@@ -40,7 +40,7 @@ class UpdateCategoryRequest extends FormRequest
                // ✅ Ignore current item]->ignore($itemId), 
             ],
             'status' => [
-                'required',
+               // 'required',
                 //Rule::exists('users', 'id'),
             ],
            

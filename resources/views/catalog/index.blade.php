@@ -23,15 +23,18 @@
                
                 {{--   @foreach ($category->getLocalName($locale) as $object) --}}
                 <div class='col-sm-4 category-row' >
-                    <div class="card category-block shadow-sm p-3 mb-5 bg-white rounded">
-                        <div class="card-body ">
+                    <div class="card category-block shadow-sm p-3 mb-5 bg-white rounded" style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                        <div class="card-body " style="overflow: hidden;">
                             <a href="{{ route('category', ['locale' => $locale, 'category' => $category->url]) }}">
                                {{-- {{ $category->name}}  --}} 
                                 {{ $category->getLocalName($locale)}}
-                                <img data-src="{{ asset(Storage::url('uploads/' . $category->preview)) }}" 
-                                alt="{{ $category->name }}"
-                                class="lazy"
-                                style="">
+                                <div class="mx-auto mt-3" style="height: 150px; width: 150px; overflow: hidden; border-radius: 5%;">
+                                    <img data-src="{{ asset(Storage::url('uploads/' . $category->preview)) }}" 
+                                
+                                    alt="{{ $category->name }}"
+                                    class="lazy card-img-top  mx-auto mt-3"
+                                    style="style="height: 150px; width: auto; display: block; margin: 0 auto;">
+                                </div>
                             </a>
                             </div>
                     

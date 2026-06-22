@@ -25,8 +25,8 @@ import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n'
 
 const route = useRoute();
-const interfaceLocale = route.params.interfaceLocale || 'ru';
-
+const interfaceLocale = route.params.interfaceLocale || 'en';
+  //console.log('interfaceLocale', interfaceLocale);
 console.log('Текущая локаль в компоненте:', interfaceLocale);
 
 const { locale } = useI18n()
