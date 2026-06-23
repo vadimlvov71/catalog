@@ -7,8 +7,10 @@
           <v-text-field
             v-model="item.name"
             label="Имя"
-            required
+            @blur="checkUnique('name')"
+            
           />
+          <div v-if="errors.name" style="color:red">{{ errors.name }}</div>
           <v-text-field
             v-model="item.url"
             label="URL"
@@ -85,6 +87,7 @@ import { reactive, ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import ImageCropDialogUpload from '../../components/dialog/ImageCropDialogUpload.vue'
 
+const errors = reactive({});
 const dialogVisible = ref(false)
 // Template ref для доступа к методам компонента
 const ImageCropDialogUploadRef = ref(null)
@@ -138,7 +141,7 @@ async function submitForm() {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(category)
+      body: JSON.stringify(item)
     });
     //if (!response.ok) throw new Error('Ошибка при сохранении');
     const data = await response.json();
@@ -146,7 +149,7 @@ async function submitForm() {
     alert('Категория сохранена успешно');
     // Можно сделать перенаправление или обновление данных
   } catch (error) {
-    alert(error.message);
+    alert('error: ' + error.message);
   }
 }
 

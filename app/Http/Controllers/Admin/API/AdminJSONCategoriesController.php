@@ -53,14 +53,40 @@ class AdminJSONCategoriesController extends Controller
             'items' => $items
         ]);
     }
-    public function validateField(Request $request)
+    public function validateField(Request $request, $fieldName)
     {
-        $field = $request->query('field');
-        $value = $request->query('value');
-        $exists = Category::where($field, $value)->exists();
-        return response()->json(['unique' => !$exists]);
-        ///return response()->json(['field' => $field, 'value' => $value]);
+
+        // Получите значение из тела запроса
+        $value = $request->input($fieldName);
+
+        if (!$value) {
+            return response()->json([
+                'message' => 'Поле не может быть пустым'
+            ], 422);
+        }
+
+        // Проверьте уникальность в базе данных
+        $exists = Category::where($fieldName, $value)->exists();
+
+        if ($exists) {
+            return response()->json([
+                'message' => "Значение '{$value}' уже существует"
+            ], 409); // 409 Conflict
+        }
+
+        // Если всё OK
+        return response()->json([
+            'message' => 'OK'
+        ], 200);
     }
+       /* $fieldname = $request->query('fieldname');
+        $value = $request->query('value');
+        $exists = Category::where($fieldname, $value)->exists();
+        return response()->json(['unique' => !$exists, 'fieldname' => $request->all()]);
+        */
+        ///return response()->json(['field' => $field, 'value' => $value]);
+    //}
+
     public function store(Request $request)
     {
         $data = $request->validate([

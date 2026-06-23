@@ -19,7 +19,7 @@
                 :label="$t('form.title')"
                 v-model="form.name"
                 required
-                @blur="checkUnique('name')"
+                @blur="handleBlur('name')"
                 ></v-text-field>
                 <div v-if="errors.name" style="color:red">{{ errors.name }}</div>
 
@@ -27,7 +27,7 @@
                 label="URL"
                 v-model="form.url"
                 required
-                @blur="checkUnique('url')"
+                @blur="handleBlur('url')"
                 ></v-text-field>
                 <div v-if="errors.url" style="color:red">{{ errors.url }}</div>
       
@@ -53,15 +53,23 @@
 </template>
 <script setup>
 import { ref, reactive } from 'vue';
+import { useCheckUnique } from '@/composables/checkUnique'
+
 const showModal = ref(false);
 const loading = ref(false);
 const form = reactive({
     name: '',
     url: '',
 });
-const errors = reactive({});
-const emit = defineEmits(['item-added']);
+const { errors, checkUnique } = useCheckUnique()
 
+// Передайте fieldName и fieldValue
+const handleBlur = (fieldName) => {
+    console.log('form', form);
+  checkUnique(fieldName, form[fieldName])
+}
+const emit = defineEmits(['item-added']);
+/*
 function checkUnique(field) {
    console.log('field');
     console.log(field);
@@ -87,6 +95,7 @@ function checkUnique(field) {
         errors[field] = 'Ошибка проверки.';
     });
 }
+    */
 function submitForm(isActive) {
       //isSubmitting = true;
       console.log('form');

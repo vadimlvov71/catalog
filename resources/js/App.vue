@@ -12,12 +12,12 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main class="d-flex align-center justify-center" height="300">
+    <v-main class="d-flex align-center justify-center" >
       <v-container>
         <v-sheet
         
           color="surface-light"
-          height="100"
+         
           margin-top="200"
           rounded="lg"
           width="100%"

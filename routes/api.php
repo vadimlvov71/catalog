@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/manager_secret/{locale}/json/items', [AdminJSONItemsController::class, 'getItems'])->name('admin.json.item.index');
     Route::get('/manager_secret/{locale}/json/categories', [AdminJSONCategoriesController::class, 'getItems'])->name('admin.json.categories.index');
     Route::get('/manager_secret/check-unique', [AdminJSONCategoriesController::class, 'validateField']);
+    Route::post('/manager_secret/check-unique/{fieldName}', [AdminJSONCategoriesController::class, 'validateField']);
     // Другие защищённые маршруты здесь
     Route::post('/manager_secret/save-category', [AdminJSONCategoriesController::class, 'store']);
     Route::post('/manager_secret/image/upload', [ImageController::class, 'store']);
