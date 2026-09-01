@@ -28,7 +28,7 @@
           :filter-keys="['name']"
           :headers="headers" 
           :items="items"
-      
+          :columns="columns"
         >
         <!--
           <template v-slot:columns.name>
@@ -38,10 +38,10 @@
           <!-- Таблица с изображениями -->
 
       
-          <template v-slot:item.name="{ item }">
+        <template v-slot:item.name="{ item }">
           <router-link :to="{ name: 'CategoryView', params: { interfaceLocale: interfaceLocale, id: item.id } }">{{ item.name }}</router-link>
         </template>
-<!--
+
         <template v-slot:item.image="{ item }">
           <v-card class="my-2" elevation="1" rounded>
             <template v-if="item.image_url">
@@ -63,6 +63,7 @@
             </template>
           </v-card>
         </template>
+        <!--
         <template v-slot:header.name="{ column }">
           <span style="color: red;">{{ column.title }}</span>
         </template>
@@ -137,10 +138,10 @@ export default {
     };
   },
    created() {
-    this.columns = this.columns.map(col => ({
+    /*this.columns = this.columns.map(col => ({
       ...col,
       title: col.title || col.key
-    }));
+    }));*/
   },
   components: {
     AddCategoryDialog,
@@ -159,6 +160,8 @@ export default {
           if(data.status === 'success'){
             this.items = data.items; // в items приходит массив товаров
             // Если колонки зависят от данных, формируем columns здесь:
+            console.log('this.items');
+            console.log(this.items);
             this.columns = [
               { title: 'name', key: 'Custom Name' },
               { title: 'Url222', key: 'url' },
@@ -166,15 +169,19 @@ export default {
               { title: 'Status 1', key: 'status' },
               { title: 'Index Page', key: 'status_index_page_show' },
             ];
-            this.headers = [
+          /*  this.headers = [
               { text: 'Название', value: 'name' },
               { text: 'ID', value: 'id' },
-              { text: 'Действия', value: 'actions', sortable: false }
-            ];
-            this.items = [
-              /* объекты с множеством полей, например  */
-              { id, name, createdAt, url } 
-            ]
+              { text: 'url123', value: 'url' },
+              { text: 'createdAt', value: 'createdAt' },
+              //{ text: 'Действия', value: 'actions', sortable: false }
+            ];*/
+            this.items = data.items.map(({ id, name, created_at, url }) => ({
+              id,
+              name,
+              createdAt: created_at, // если нужно переименовать
+              url
+            }));
           } else {
             console.error('Ошибка при получении данных');
           }
