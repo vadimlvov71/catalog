@@ -25,17 +25,20 @@ export function checkUnique1(field) {
     });
 }
 */
-import { ref } from 'vue'
+import { reactive } from 'vue';
+//import { ref } from 'vue'
 
-export function useCheckUnique() {
-    
-    const errors = ref({})
+//export function useCheckUnique() {
+//    const errors = ref({})
+export function useCheckUnique(outsideErrors = reactive({})) {
+  const errors = outsideErrors;  
+
 
   const checkUnique = async (fieldName, fieldValue, endpoint) => {
     console.log('useCheckUnique: ', fieldName);
     try {
       // Очистите предыдущую ошибку для этого поля
-      errors.value[fieldName] = null
+      errors[fieldName] = null
 
       // Проверка на пустое значение
       if (!fieldValue) return
@@ -52,11 +55,11 @@ export function useCheckUnique() {
         console.log('useCheckUnique response: ', data);
       if (!response.ok) {
         // Если ошибка валидации с сервера
-        errors.value[fieldName] = data.message || `${fieldName} уже существует`
+        errors[fieldName] = data.message || `${fieldName} уже существует`
       }
-    } catch (error) {
-      console.error('Ошибка проверки:', error)
-      errors.value[fieldName] = 'Ошибка проверки сервера'
+    } catch (errors) {
+      console.log('Ошибка проверки:', errors)
+      errors[fieldName] = 'Ошибка проверки сервера'
     }
   }
 

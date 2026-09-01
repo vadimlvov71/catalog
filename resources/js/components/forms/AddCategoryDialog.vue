@@ -18,7 +18,6 @@
                 <v-text-field
                 :label="$t('form.title')"
                 v-model="form.name"
-                required
                 @blur="handleBlur('name')"
                 ></v-text-field>
                 <div v-if="errors.name" style="color:red">{{ errors.name }}</div>
@@ -55,17 +54,29 @@
 import { ref, reactive } from 'vue';
 import { useCheckUnique } from '@/composables/checkUnique'
 
+const errors = reactive({});
 const showModal = ref(false);
 const loading = ref(false);
 const form = reactive({
     name: '',
     url: '',
 });
-const { errors, checkUnique } = useCheckUnique()
+const { checkUnique } = useCheckUnique(errors)
 
 // Передайте fieldName и fieldValue
 const handleBlur = (fieldName) => {
     console.log('form', form);
+     console.log('fieldName: ', fieldName);
+    const val = (form[fieldName] || '').trim();
+    console.log('val', val);
+    console.log('errors::: ', errors);
+      if (!val) {
+        console.log('errors' + fieldName, errors[fieldName]);
+        errors[fieldName] = `${fieldName} не может быть пустым`;
+      } else {
+        console.log('errors delete', errors[fieldName]);
+        delete errors[fieldName];
+      }
   checkUnique(fieldName, form[fieldName])
 }
 const emit = defineEmits(['item-added']);

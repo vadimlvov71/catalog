@@ -5,7 +5,7 @@
       <v-card flat>
         <v-card-title class="d-flex align-center pe-2">
           <v-icon icon="mdi-video-input-component"></v-icon> &nbsp;
-          Find a Graphics Card
+          Find a Category
 
           <v-spacer></v-spacer>
 
@@ -26,8 +26,9 @@
         <v-data-table
           v-model:search="search"
           :filter-keys="['name']"
+          :headers="headers" 
           :items="items"
-          :columns="columns"
+      
         >
         <!--
           <template v-slot:columns.name>
@@ -35,10 +36,12 @@
           </template>
 -->
           <!-- Таблица с изображениями -->
-        <template v-slot:item.name="{ item }">
+
+      
+          <template v-slot:item.name="{ item }">
           <router-link :to="{ name: 'CategoryView', params: { interfaceLocale: interfaceLocale, id: item.id } }">{{ item.name }}</router-link>
         </template>
-
+<!--
         <template v-slot:item.image="{ item }">
           <v-card class="my-2" elevation="1" rounded>
             <template v-if="item.image_url">
@@ -68,7 +71,7 @@
           <span style="color: red;">{{ column.status }}</span>
         </template>
         <template v-slot:header.image="{ column }">
-          <span style="color: red;">4{{ column.image }}</span>
+          <span style="color: red;">{{ column.image }}</span>
         </template>
            <template v-slot:item.preview="{ item }">
                 <v-card class="my-2" elevation="1" rounded>
@@ -105,36 +108,11 @@
               ></v-chip>
             </div>
           </template>
+          -->
         </v-data-table>
       </v-card>
     </div>
-    <div class="category-admin-panel">
-      <table class="categories-table">
-        <thead>
-          <tr>
-            <th>Название</th>
-            <th>Изображение</th>
-            <th>Статус</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in items" :key="item.id">
-            <td>{{ item.name }}</td>
-            <td>
-              <img :src="item.imageUrl" alt="item.name" class="category-image" />
-            </td>
-            
-            <td>
-              <select v-model="item.status" @change="updateStatus(item)">
-                <option value="active">Активен</option>
-                <option value="inactive">Неактивен</option>
-                <option value="hidden">Архив</option>
-              </select>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    
   </div>
   <ImageDialogUpload ref="ImageDialogUpload" />
   <ImageCropDialogUpload ref="ImageCropDialogUpload" v-model:dialog="dialogVisible" />
@@ -182,12 +160,21 @@ export default {
             this.items = data.items; // в items приходит массив товаров
             // Если колонки зависят от данных, формируем columns здесь:
             this.columns = [
-              { title: 'Custom Name', key: 'name' },
-              { title: 'Url', key: 'url' },
+              { title: 'name', key: 'Custom Name' },
+              { title: 'Url222', key: 'url' },
               { title: 'Image', key: 'image' },
               { title: 'Status 1', key: 'status' },
               { title: 'Index Page', key: 'status_index_page_show' },
             ];
+            this.headers = [
+              { text: 'Название', value: 'name' },
+              { text: 'ID', value: 'id' },
+              { text: 'Действия', value: 'actions', sortable: false }
+            ];
+            this.items = [
+              /* объекты с множеством полей, например  */
+              { id, name, createdAt, url } 
+            ]
           } else {
             console.error('Ошибка при получении данных');
           }

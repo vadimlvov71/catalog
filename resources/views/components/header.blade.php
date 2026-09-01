@@ -1,6 +1,20 @@
 <header class="bg-light shadow-sm rounded">
   <nav class="navbar navbar-expand-lg navbar-light container">
     <!-- Логотип -->
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="120" viewBox="0 0 700 120">
+  <defs>
+    <style>
+      .large{font-family: 'Montserrat', sans-serif; font-weight:800; font-size:48px; fill:#0B2545}
+      .accent{fill:#00C853}
+      .sub{font-family:'Inter',sans-serif;font-size:12px;fill:#6B7C93}
+    </style>
+  </defs>
+
+  <text x="12" y="64" class="large"><tspan>rent</tspan> <tspan class="accent">a</tspan> <tspan>website</tspan></text>
+  <text x="12" y="92" class="sub">Fast launch • No setup • Monthly plans</text>
+</svg>
+
+
     <a class="navbar-brand" href="#">
       <img src="https://via.placeholder.com/100x40?text=Logo" alt="Логотип" height="40" />
     </a>
